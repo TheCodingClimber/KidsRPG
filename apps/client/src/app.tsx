@@ -4,7 +4,7 @@ import PinLogin from "./screens/PinLogin";
 import Menu from "./screens/Menu";
 import CreateCharacter from "./screens/CreateCharacter";
 import LoadGame from "./screens/LoadGame";
-import { Game } from "./screens/Game";
+import Game from "./screens/Game";
 
 type Screen = "menu" | "create" | "load" | "game";
 
@@ -64,8 +64,10 @@ export default function App() {
 
   // Game
   return (
-    <Game
-      characterId={activeCharId}
-    />
-  );
+  <Game
+    characterId={activeCharId}
+    onExitToMenu={() => setScreen("menu")}
+  />
+);
+
 }

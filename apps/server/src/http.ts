@@ -104,6 +104,30 @@ export function createHttpServer() {
     const { accountId } = req as AuthedRequest;
     const db = openDb();
 
+    // Delete a character (and cascade deletes saves/equipment/items via foreign keys)
+app.delete("/characters/:characterId", requireAuth, (req, res) => {
+  const { accountId } = req as AuthedRequest;
+  const { characterId } = req.params;
+
+  const db = openDb();
+
+  // Verify character belongs to this account
+  const row = db
+    .prepare(`SELECT id FROM characters WHERE id = ? AND account_id = ?`)
+    .get(characterId, accountId) as { id: string } | undefined;
+
+  if (!row) {
+    db.close();
+    return res.status(404).json({ error: "Character not found" });
+  }
+
+  db.prepare(`DELETE FROM characters WHERE id = ? AND account_id = ?`).run(characterId, accountId);
+
+  db.close();
+  res.json({ ok: true });
+});
+
+
     const rows = db
       .prepare(
         `SELECT id, name, race, class, background, personality, level, gold
@@ -116,6 +140,90 @@ export function createHttpServer() {
     db.close();
     res.json({ characters: rows });
   });
+
+  /* =========================
+   Inventory (Backpack) - using existing items/equipment tables
+   ========================= */
+
+app.get("/inventory/:characterId", requireAuth, (req, res) => {
+  const { accountId } = req as AuthedRequest;
+  const { characterId } = req.params;
+
+  const db = openDb();
+
+  // Ensure character belongs to account
+  const ok = db
+    .prepare(`SELECT id FROM characters WHERE id = ? AND account_id = ?`)
+    .get(characterId, accountId);
+
+  if (!ok) {
+    db.close();
+    return res.status(404).json({ error: "Character not found" });
+  }
+
+  // Return items NOT currently equipped
+  const rows = db
+    .prepare(
+      `SELECT id as itemId, name, slot, rarity, stats_json as statsJson
+       FROM items
+       WHERE character_id = ?
+         AND id NOT IN (
+           SELECT item_id FROM equipment
+           WHERE character_id = ?
+             AND item_id IS NOT NULL
+         )
+       ORDER BY name ASC`
+    )
+    .all(characterId, characterId);
+
+  db.close();
+  res.json({ items: rows });
+});
+
+app.post("/inventory/drop/:characterId", requireAuth, (req, res) => {
+  const { accountId } = req as AuthedRequest;
+  const { characterId } = req.params;
+
+  const DropSchema = z.object({
+    itemId: z.string().min(1),
+  });
+
+  const parsed = DropSchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({ error: parsed.error.message });
+  }
+
+  const { itemId } = parsed.data;
+
+  const db = openDb();
+
+  // Ensure character belongs to account
+  const ok = db
+    .prepare(`SELECT id FROM characters WHERE id = ? AND account_id = ?`)
+    .get(characterId, accountId);
+
+  if (!ok) {
+    db.close();
+    return res.status(404).json({ error: "Character not found" });
+  }
+
+  // If this item is equipped, unequip it first
+  db.prepare(
+    `UPDATE equipment
+     SET item_id = NULL
+     WHERE character_id = ? AND item_id = ?`
+  ).run(characterId, itemId);
+
+  // Delete the item (only if it belongs to this character)
+  const result = db
+    .prepare(`DELETE FROM items WHERE id = ? AND character_id = ?`)
+    .run(itemId, characterId);
+
+  db.close();
+
+  res.json({ ok: true, deleted: result.changes });
+});
+
 
   app.post("/characters", requireAuth, (req, res) => {
     const { accountId } = req as AuthedRequest;
@@ -193,6 +301,106 @@ export function createHttpServer() {
     x: z.number().int(),
     y: z.number().int(),
   });
+
+  /* =========================
+   Inventory (Backpack)
+   ========================= */
+
+// Returns backpack items for a character (owned by this account)
+app.get("/inventory/:characterId", requireAuth, (req, res) => {
+  const { accountId } = req as AuthedRequest;
+  const { characterId } = req.params;
+
+  const db = openDb();
+
+  // Ensure character belongs to account
+  const ok = db
+    .prepare(`SELECT id FROM characters WHERE id = ? AND account_id = ?`)
+    .get(characterId, accountId);
+
+  if (!ok) {
+    db.close();
+    return res.status(404).json({ error: "Character not found" });
+  }
+
+  // Try to load from a real inventory table if it exists.
+  // If your schema differs, adjust the query to match.
+  // Expected schema: inventory(character_id, item_id, qty) + items(id, name)
+  try {
+    const rows = db
+      .prepare(
+        `SELECT i.id as itemId, i.name as name, COALESCE(inv.qty, 1) as qty
+         FROM inventory inv
+         JOIN items i ON i.id = inv.item_id
+         WHERE inv.character_id = ?
+         ORDER BY i.name ASC`
+      )
+      .all(characterId) as Array<{ itemId: string; name: string; qty: number }>;
+
+    db.close();
+    return res.json({ items: rows });
+  } catch (err) {
+    // If the inventory table doesn't exist yet, return empty backpack instead of crashing.
+    db.close();
+    return res.json({ items: [] });
+  }
+});
+
+// Drops ONE unit of an item (or removes the row if qty hits 0)
+app.post("/inventory/drop/:characterId", requireAuth, (req, res) => {
+  const { accountId } = req as AuthedRequest;
+  const { characterId } = req.params;
+
+  const ItemDropSchema = z.object({
+    itemId: z.string().min(1),
+  });
+
+  const parsed = ItemDropSchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({ error: parsed.error.message });
+  }
+
+  const { itemId } = parsed.data;
+
+  const db = openDb();
+
+  // Ensure character belongs to account
+  const ok = db
+    .prepare(`SELECT id FROM characters WHERE id = ? AND account_id = ?`)
+    .get(characterId, accountId);
+
+  if (!ok) {
+    db.close();
+    return res.status(404).json({ error: "Character not found" });
+  }
+
+  // If inventory table isn't present, treat as no-op
+  try {
+    const row = db
+      .prepare(`SELECT qty FROM inventory WHERE character_id = ? AND item_id = ?`)
+      .get(characterId, itemId) as { qty: number } | undefined;
+
+    if (!row) {
+      db.close();
+      return res.json({ ok: true });
+    }
+
+    if (row.qty <= 1) {
+      db.prepare(`DELETE FROM inventory WHERE character_id = ? AND item_id = ?`).run(characterId, itemId);
+    } else {
+      db.prepare(
+        `UPDATE inventory SET qty = qty - 1 WHERE character_id = ? AND item_id = ?`
+      ).run(characterId, itemId);
+    }
+
+    db.close();
+    return res.json({ ok: true });
+  } catch {
+    db.close();
+    return res.json({ ok: true });
+  }
+});
+
 
   app.get("/game/load/:characterId", requireAuth, (req, res) => {
     const { accountId } = req as AuthedRequest;

@@ -1,38 +1,35 @@
 import { useEffect, useRef } from "react";
 
-type ChatMsg = {
+export type ChatMsg = {
   id: string;
-  from: "dm" | "player" | "system";
+  from: "dm" | "player" | "system" | "npc";
   text: string;
   ts: number;
 };
 
 export default function ChatPanel({
-  title,
+  title = "Adventure Log",
+  showTitle = true,
   messages,
 }: {
-  title: string;
+  title?: string;
+  showTitle?: boolean;
   messages: ChatMsg[];
 }) {
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const shouldAutoScrollRef = useRef(true);
 
-  // Track whether the user is "near the bottom".
   function handleScroll() {
     const el = scrollerRef.current;
     if (!el) return;
-
     const distanceFromBottom = el.scrollHeight - (el.scrollTop + el.clientHeight);
-    // If user is within 80px of bottom, we consider them "following" the log.
     shouldAutoScrollRef.current = distanceFromBottom < 80;
   }
 
-  // Auto-scroll ONLY if user is already near bottom.
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
     if (!shouldAutoScrollRef.current) return;
-
     el.scrollTop = el.scrollHeight;
   }, [messages.length]);
 
@@ -41,46 +38,67 @@ export default function ChatPanel({
       style={{
         height: "100%",
         border: "1px solid #333",
-        borderRadius: 10,
-        padding: 10,
+        borderRadius: 12,
+        padding: 12,
         display: "grid",
-        gridTemplateRows: "auto 1fr",
+        gridTemplateRows: showTitle ? "auto 1fr" : "1fr",
         gap: 10,
         boxSizing: "border-box",
+        minHeight: 0,
+        background: "rgba(10, 10, 10, 0.35)",
       }}
     >
-      <div style={{ fontWeight: 800 }}>{title}</div>
+      {showTitle && (
+        <div style={{ fontWeight: 900, letterSpacing: 0.3, opacity: 0.95 }}>
+          {title}
+        </div>
+      )}
 
       <div
         ref={scrollerRef}
         onScroll={handleScroll}
         style={{
           overflow: "auto",
-          padding: 10,
-          border: "1px solid #444",
-          borderRadius: 10,
-          background: "rgba(0,0,0,0.03)",
+          padding: 12,
+          border: "1px solid #2b2b2b",
+          borderRadius: 12,
+          background: "rgba(0,0,0,0.25)",
           display: "grid",
-          gap: 10,
+          gap: 12,
+          minHeight: 0,
         }}
       >
         {messages.map((m) => {
-          const label = m.from === "dm" ? "DM" : m.from === "player" ? "You" : "System";
+          const label =
+            m.from === "dm"
+              ? "DM"
+              : m.from === "player"
+              ? "You"
+              : m.from === "npc"
+              ? "NPC"
+              : "System";
 
-          // Make system text slightly larger + more vertical breathing room
           const isSystem = m.from === "system";
 
           return (
-            <div key={m.id} style={{ lineHeight: isSystem ? 1.55 : 1.35 }}>
-              <div style={{ fontWeight: 800, opacity: 0.8 }}>{label}</div>
+            <div key={m.id} style={{ lineHeight: isSystem ? 1.6 : 1.35 }}>
+              {/* ✅ Hide the inner "System" label to prevent the double-System look */}
+              {!isSystem && (
+                <div style={{ fontWeight: 800, opacity: 0.8 }}>
+                  {label}
+                </div>
+              )}
 
               <div
                 style={{
                   whiteSpace: "pre-wrap",
-                  fontSize: isSystem ? 14.5 : 14,
-                  padding: isSystem ? "6px 8px" : 0,
-                  borderRadius: 8,
-                  background: isSystem ? "rgba(0,0,0,0.06)" : "transparent",
+                  fontSize: 14.5,
+                  padding: isSystem ? "8px 10px" : "6px 8px",
+                  borderRadius: 10,
+                  background: isSystem
+                    ? "rgba(255,255,255,0.04)"
+                    : "rgba(255,255,255,0.02)",
+                  border: "1px solid rgba(255,255,255,0.04)",
                 }}
               >
                 {m.text}

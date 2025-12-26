@@ -1,14 +1,5 @@
 import React from "react";
-
-type Settlement = {
-  id: string;
-  name: string;
-  type: "town" | "village";
-  x: number;
-  y: number;
-  signpost?: { x: number; y: number };
-  travelFee?: number;
-};
+import type { Settlement } from "./MapPanel";
 
 export default function TravelModal({
   open,
@@ -34,7 +25,7 @@ export default function TravelModal({
   const rows = [...settlements].map((s) => {
     const dx = Math.abs((s.signpost?.x ?? s.x) - playerX);
     const dy = Math.abs((s.signpost?.y ?? s.y) - playerY);
-    const dist = dx + dy; // manhattan distance (simple + readable)
+    const dist = dx + dy; // manhattan distance
     const fee = Number(s.travelFee ?? (s.type === "town" ? 25 : 10));
     return { ...s, dist, fee };
   });
