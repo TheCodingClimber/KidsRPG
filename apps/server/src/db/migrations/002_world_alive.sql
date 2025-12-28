@@ -866,49 +866,69 @@ INSERT OR IGNORE INTO recipes (id, name, output_item_def_id, output_qty, station
 ('rcp_repair_kit_cloth',   'Assemble Cloth Repair Kit', 'itm_repair_kit_cloth', 1, 'workbench', 2, '{"timeSec":25,"uses":3}');
 
 INSERT OR IGNORE INTO recipe_ingredients (recipe_id, item_def_id, qty) VALUES
-('rcp_campfire_bread', 'itm_wood', 1),
-('rcp_campfire_bread', 'itm_bread', 1),
+-- =========================================================
+-- Survival & Food (Campfire)
+-- =========================================================
+('rcp_campfire_rations',   'itm_meat', 2),
+('rcp_campfire_rations',   'itm_bread', 1),
+('rcp_campfire_rations',   'itm_cloth', 1), -- For the wrapping
+('rcp_campfire_honey',    'itm_honey', 1),
+('rcp_campfire_honey',    'itm_wood', 1),  -- For the fire/smoker
 
-('rcp_campfire_jerky', 'itm_meat', 1),
+-- =========================================================
+-- Advanced Alchemy (Alchemy Station)
+-- =========================================================
+('rcp_focus_tonic',        'itm_dreamroot', 2),
+('rcp_focus_tonic',        'itm_mint_leaf', 2),
+('rcp_focus_tonic',        'itm_sunpetal', 1),
 
-('rcp_bandage', 'itm_cloth', 1),
-('rcp_bandage', 'itm_leather', 1),
+-- =========================================================
+-- Martial Weapons (Forge)
+-- =========================================================
+('rcp_forge_greatsword',   'itm_iron_ingot', 4),
+('rcp_forge_greatsword',   'itm_leather_strap', 2),
+('rcp_forge_warhammer',    'itm_iron_ingot', 2),
+('rcp_forge_warhammer',    'itm_wood', 1),
+('rcp_forge_rapier',       'itm_iron_ingot', 2),
+('rcp_forge_rapier',       'itm_leather_strap', 1),
+('rcp_forge_greataxe',     'itm_iron_ingot', 3),
+('rcp_forge_greataxe',     'itm_wood', 2),
+('rcp_forge_maul',         'itm_iron_ingot', 4),
+('rcp_forge_maul',         'itm_wood', 2),
+('rcp_forge_scimitar',     'itm_iron_ingot', 2),
+('rcp_forge_scimitar',     'itm_leather_strap', 1),
+('rcp_forge_steel_shield', 'itm_iron_ingot', 3),
+('rcp_forge_steel_shield', 'itm_leather_strap', 1),
 
-('rcp_small_potion', 'itm_healing_herb', 2),
-('rcp_small_potion', 'itm_mint_leaf', 1),
+-- =========================================================
+-- Advanced Armor (Forge)
+-- =========================================================
+('rcp_forge_scale_mail',   'itm_iron_ingot', 4),
+('rcp_forge_scale_mail',   'itm_leather', 2),
+('rcp_forge_breastplate',  'itm_iron_ingot', 5),
+('rcp_forge_breastplate',  'itm_leather_strap', 2),
+('rcp_forge_chain_mail',   'itm_iron_ingot', 6),
+('rcp_forge_chain_mail',   'itm_leather_strap', 1),
+('rcp_forge_plate_armor',  'itm_iron_ingot', 10),
+('rcp_forge_plate_armor',  'itm_leather', 4),
+('rcp_forge_plate_armor',  'itm_rivets', 4),
 
-('rcp_medium_potion', 'itm_healing_herb', 3),
-('rcp_medium_potion', 'itm_sunpetal', 2),
-
-('rcp_stamina_draught', 'itm_mint_leaf', 3),
-('rcp_stamina_draught', 'itm_healing_herb', 1),
-
-('rcp_iron_ingot', 'itm_iron_ore', 2),
-
-('rcp_leather_strap', 'itm_leather', 1),
-
-('rcp_arrow_bundle', 'itm_wood', 2),
-('rcp_arrow_bundle', 'itm_stone', 1),
-
-('rcp_bolt_bundle', 'itm_wood', 2),
-('rcp_bolt_bundle', 'itm_iron_ingot', 1),
-
-('rcp_iron_sword', 'itm_iron_ingot', 2),
-('rcp_iron_sword', 'itm_wood', 1),
-
-('rcp_leather_cap', 'itm_leather', 2),
-('rcp_leather_cap', 'itm_cloth', 1),
-
-('rcp_leather_vest', 'itm_leather', 4),
-('rcp_leather_vest', 'itm_cloth', 2),
-
-('rcp_repair_kit_iron', 'itm_iron_ingot', 2),
-('rcp_repair_kit_iron', 'itm_wax', 2),
-('rcp_repair_kit_iron', 'itm_cloth', 1),
-
-('rcp_repair_kit_leather', 'itm_leather_strap', 3),
-('rcp_repair_kit_leather', 'itm_wax', 2),
-('rcp_repair_kit_leather', 'itm_cloth', 1);
+-- =========================================================
+-- Leather, Cloth & Tools (Workbench)
+-- =========================================================
+('rcp_padded_armor',       'itm_cloth', 6),
+('rcp_padded_armor',       'itm_thread', 2),
+('rcp_hide_armor',         'itm_leather', 4),
+('rcp_hide_armor',         'itm_leather_strap', 2),
+('rcp_wooden_shield',      'itm_wood', 3),
+('rcp_wooden_shield',      'itm_iron_ingot', 1), -- For the rim/boss
+('rcp_rope_bundle',        'itm_thread', 4),
+('rcp_splint_kit',         'itm_wood', 2),
+('rcp_splint_kit',         'itm_cloth', 2),
+('rcp_splint_kit',         'itm_leather_strap', 1),
+('rcp_repair_kit_cloth',   'itm_cloth', 2),
+('rcp_repair_kit_cloth',   'itm_thread', 2),
+('rcp_repair_kit_cloth',   'itm_wax', 1);
 
 
 
