@@ -552,65 +552,129 @@ INSERT OR IGNORE INTO skills (id, name, description, meta_json) VALUES
 INSERT OR IGNORE INTO item_defs
 (id, name, type, slot, rarity, stackable, max_stack, base_value, weight, durability_max, meta_json) VALUES
 
--- RESOURCES / COMPONENTS
-('itm_wood',      'Wood',      'resource', NULL, 'common', 1, 50, 1, 0.5, 0, '{"tags":["item:resource","material:wood"]}'),
-('itm_stone',     'Stone',     'resource', NULL, 'common', 1, 50, 1, 0.7, 0, '{"tags":["item:resource","material:stone"]}'),
-('itm_iron_ore',  'Iron Ore',  'resource', NULL, 'common', 1, 50, 3, 0.8, 0, '{"tags":["item:resource","material:iron"]}'),
-('itm_leather',   'Leather',   'resource', NULL, 'common', 1, 50, 2, 0.4, 0, '{"tags":["item:resource","material:leather"]}'),
-('itm_cloth',     'Cloth',     'resource', NULL, 'common', 1, 50, 2, 0.3, 0, '{"tags":["item:resource","material:cloth"]}'),
-('itm_meat',      'Meat',      'resource', NULL, 'common', 1, 20, 3, 0.4, 0, '{"tags":["item:resource","ingredient:meat"]}'),
+-- =========================================================
+-- RESOURCES / COMPONENTS (flavor + craft hooks)
+-- =========================================================
+('itm_wood',        'Wood (Bundle)',         'resource', NULL, 'common', 1, 50, 1, 0.5, 0, '{"tags":["item:resource","material:wood"],"flavor":"Sturdy kindling and planks."}'),
+('itm_stone',       'Stone (Chunk)',         'resource', NULL, 'common', 1, 50, 1, 0.7, 0, '{"tags":["item:resource","material:stone"],"flavor":"Rough stone for building or throwing."}'),
+('itm_iron_ore',    'Iron Ore',              'resource', NULL, 'common', 1, 50, 3, 0.8, 0, '{"tags":["item:resource","material:iron"],"flavor":"Speckled ore that wants to become a blade."}'),
+('itm_leather',     'Leather (Hide)',        'resource', NULL, 'common', 1, 50, 2, 0.4, 0, '{"tags":["item:resource","material:leather"],"flavor":"Tanned hide—good for straps and armor."}'),
+('itm_cloth',       'Cloth (Bolt)',          'resource', NULL, 'common', 1, 50, 2, 0.3, 0, '{"tags":["item:resource","material:cloth"],"flavor":"A bolt of cloth—useful for wraps and tunics."}'),
+('itm_meat',        'Meat (Fresh Cut)',      'resource', NULL, 'common', 1, 20, 3, 0.4, 0, '{"tags":["item:resource","ingredient:meat"],"flavor":"Fresh cut meat—best cooked soon."}'),
 
--- NEW: repair components
-('itm_iron_ingot', 'Iron Ingot', 'component', NULL, 'common', 1, 50, 6, 0.7, 0, '{"tags":["item:component","material:iron","use:repair"]}'),
-('itm_leather_strap','Leather Strap','component',NULL,'common',1,50,4,0.2,0,'{"tags":["item:component","material:leather","use:repair"]}'),
-('itm_wax',        'Wax',       'component', NULL, 'common', 1, 50, 2, 0.1, 0, '{"tags":["item:component","use:repair"]}'),
+('itm_iron_ingot',     'Iron Ingot',         'component', NULL, 'common', 1, 50, 6, 0.7, 0, '{"tags":["item:component","material:iron","use:repair","use:craft"],"flavor":"A clean bar of iron—smiths love these."}'),
+('itm_leather_strap',  'Leather Strap',      'component', NULL, 'common', 1, 50, 4, 0.2, 0, '{"tags":["item:component","material:leather","use:repair"],"flavor":"A sturdy strap with a simple buckle."}'),
+('itm_wax',            'Beeswax',            'component', NULL, 'common', 1, 50, 2, 0.1, 0, '{"tags":["item:component","use:repair","use:craft"],"flavor":"Wax for sealing, polishing, and quiet fixes."}'),
+('itm_pitch',          'Pine Pitch',         'component', NULL, 'common', 1, 30, 2, 0.2, 0, '{"tags":["item:component","use:repair"],"flavor":"Sticky pitch—great for patching cracks."}'),
+('itm_thread',         'Strong Thread',      'component', NULL, 'common', 1, 50, 1, 0.1, 0, '{"tags":["item:component","use:repair","material:cloth"],"flavor":"Waxed thread that bites into cloth and leather."}'),
+('itm_rivets',         'Iron Rivets (Set)',  'component', NULL, 'common', 1, 50, 2, 0.2, 0, '{"tags":["item:component","use:repair","material:iron"],"flavor":"Tiny metal teeth for armor fixes."}'),
+('itm_resin',          'Amber Resin',        'component', NULL, 'uncommon',1, 30, 7, 0.1, 0, '{"tags":["item:component","use:craft"],"flavor":"A golden resin used in fine varnish and charms."}'),
 
--- FOOD / CONSUMABLES
-('itm_bread',     'Bread',     'consumable', NULL, 'common', 1, 10, 1, 0.2, 0, '{"heal":2,"tags":["item:food","use:heal"]}'),
-('itm_jerky',     'Jerky',     'consumable', NULL, 'common', 1, 10, 2, 0.2, 0, '{"stamina":2,"tags":["item:food","use:stamina"]}'),
-('itm_bandage',   'Bandage',   'consumable', NULL, 'common', 1, 10, 5, 0.2, 0, '{"heal":5,"tags":["use:heal"]}'),
+-- =========================================================
+-- FOOD / CONSUMABLES (D&D-ish)
+-- =========================================================
+('itm_bread',       'Bread Loaf',            'consumable', NULL, 'common', 1, 10, 1, 0.2, 0, '{"heal":2,"tags":["item:food","use:heal"],"flavor":"Warm enough to make you brave."}'),
+('itm_jerky',       'Jerky Strip',           'consumable', NULL, 'common', 1, 10, 2, 0.2, 0, '{"stamina":2,"tags":["item:food","use:stamina"],"flavor":"Dry, salty, and reliable."}'),
+('itm_rations',     'Travel Rations',        'consumable', NULL, 'common', 1, 10, 5, 0.6, 0, '{"stamina":4,"tags":["item:food","use:stamina"],"flavor":"Hardtack, nuts, and dried fruit—adventurer fuel."}'),
+('itm_cheese',      'Cheese Wheel',          'consumable', NULL, 'common', 1, 5,  4, 0.7, 0, '{"heal":3,"tags":["item:food","use:heal"],"flavor":"Smells strong. Tastes stronger."}'),
+('itm_honey',       'Jar of Honey',          'consumable', NULL, 'uncommon',1, 5,  8, 0.8, 0, '{"heal":4,"tags":["item:food","use:heal"],"flavor":"Sweet gold—good for morale and sore throats."}'),
+('itm_water_flask', 'Waterskin',             'consumable', NULL, 'common', 1, 3,  2, 0.9, 0, '{"stamina":2,"tags":["item:food","use:stamina"],"flavor":"Cool water on a dusty road."}'),
 
--- NEW: potion tiering
-('itm_small_potion','Small Potion','consumable',NULL,'uncommon',1,5,18,0.5,0,'{"heal":10,"tags":["use:heal"]}'),
-('itm_medium_potion','Medium Potion','consumable',NULL,'rare',1,3,45,0.6,0,'{"heal":25,"tags":["use:heal"]}'),
-('itm_stamina_draught','Stamina Draught','consumable',NULL,'uncommon',1,5,20,0.5,0,'{"stamina":12,"tags":["use:stamina"]}'),
+('itm_bandage',     'Bandage Roll',          'consumable', NULL, 'common', 1, 10, 5, 0.2, 0, '{"heal":5,"tags":["use:heal","item:medical"],"flavor":"Clean cloth strips—wrap it tight."}'),
+('itm_splint',      'Splint Kit',            'consumable', NULL, 'uncommon',1, 5,  12,0.6, 0, '{"heal":8,"tags":["use:heal","item:medical"],"flavor":"Wood, cloth, and know-how in a pouch."}'),
 
+-- =========================================================
+-- POTIONS / DRAUGHTS (tiered)
+-- =========================================================
+('itm_small_potion',    'Potion of Healing (Small)',  'consumable', NULL, 'uncommon', 1, 5,  18, 0.5, 0, '{"heal":10,"tags":["use:heal","item:potion"],"flavor":"A red swirl that tastes like cinnamon."}'),
+('itm_medium_potion',   'Potion of Healing (Medium)', 'consumable', NULL, 'rare',     1, 3,  45, 0.6, 0, '{"heal":25,"tags":["use:heal","item:potion"],"flavor":"A deeper red—warmth spreads fast."}'),
+('itm_stamina_draught', 'Stamina Draught',            'consumable', NULL, 'uncommon', 1, 5,  20, 0.5, 0, '{"stamina":12,"tags":["use:stamina","item:potion"],"flavor":"Tastes like mint and thunder."}'),
+('itm_focus_tonic',     'Focus Tonic',                'consumable', NULL, 'rare',     1, 3,  40, 0.4, 0, '{"focus":1,"tags":["use:focus","item:potion"],"flavor":"Sharpens your thoughts like a whetstone."}'),
+
+-- =========================================================
 -- TOOLS
-('itm_torch',     'Torch',     'tool', NULL, 'common', 1, 5, 1, 0.6, 0, '{"light":1,"tags":["item:tool","use:light"]}'),
+-- =========================================================
+('itm_torch',         'Torch',               'tool', NULL, 'common',   1,  5,  1, 0.6, 0, '{"light":1,"tags":["item:tool","use:light"],"flavor":"A simple flame that makes shadows behave."}'),
+('itm_flint_steel',   'Flint & Steel',       'tool', NULL, 'common',   1,  1,  5, 0.2, 0, '{"tags":["item:tool","use:fire"],"flavor":"Sparks on demand."}'),
+('itm_rope',          'Rope (50 ft)',        'tool', NULL, 'common',   1,  1,  10,1.0, 0, '{"tags":["item:tool","use:climb"],"flavor":"Hemp rope with a trustworthy bite."}'),
+('itm_lockpicks',     'Lockpicks (Simple)',  'tool', NULL, 'uncommon', 1,  1,  25,0.1, 0, '{"tags":["item:tool","use:lockpick"],"flavor":"For doors that think they’re clever."}'),
 
--- REPAIR KITS
-('itm_repair_kit_iron',    'Metal Repair Kit',   'tool',NULL,'uncommon',1,10,22,0.8,0,'{"repair":{"amount":30,"targets":["material:iron"],"uses":3},"tags":["item:tool","use:repair","repair:iron"]}'),
-('itm_repair_kit_leather', 'Leather Repair Kit', 'tool',NULL,'uncommon',1,10,18,0.6,0,'{"repair":{"amount":30,"targets":["material:leather"],"uses":3},"tags":["item:tool","use:repair","repair:leather"]}'),
+-- =========================================================
+-- REPAIR KITS (material-targeted)
+-- =========================================================
+('itm_repair_kit_iron',    'Metal Repair Kit',    'tool', NULL, 'uncommon', 1, 10, 22, 0.8, 0, '{"repair":{"amount":30,"targets":["material:iron"],"uses":3},"tags":["item:tool","use:repair","repair:iron"],"flavor":"Rivets, oil, and a tiny hammer."}'),
+('itm_repair_kit_leather', 'Leather Repair Kit',  'tool', NULL, 'uncommon', 1, 10, 18, 0.6, 0, '{"repair":{"amount":30,"targets":["material:leather"],"uses":3},"tags":["item:tool","use:repair","repair:leather"],"flavor":"Needle, waxed thread, and patches."}'),
+('itm_repair_kit_cloth',   'Cloth Repair Kit',    'tool', NULL, 'common',   1, 10, 12, 0.4, 0, '{"repair":{"amount":20,"targets":["material:cloth"],"uses":3},"tags":["item:tool","use:repair","repair:cloth"],"flavor":"Thread and a little patience."}'),
 
+-- =========================================================
 -- AMMO
-('itm_arrow',     'Arrow',     'ammo', NULL, 'common', 1, 50, 1, 0.1, 0, '{"tags":["item:ammo","ammo:arrow"]}'),
-('itm_bolt',      'Bolt',      'ammo', NULL, 'common', 1, 50, 1, 0.1, 0, '{"tags":["item:ammo","ammo:bolt"]}'),
-('itm_pebble',    'Pebble',    'ammo', NULL, 'common', 1, 99, 1, 0.1, 0, '{"tags":["item:ammo","ammo:pebble"]}'),
+-- =========================================================
+('itm_arrow',   'Arrow',   'ammo', NULL, 'common', 1, 50, 1, 0.1, 0, '{"tags":["item:ammo","ammo:arrow"],"flavor":"Straight shaft, sharp promise."}'),
+('itm_bolt',    'Bolt',    'ammo', NULL, 'common', 1, 50, 1, 0.1, 0, '{"tags":["item:ammo","ammo:bolt"],"flavor":"Short and mean."}'),
+('itm_pebble',  'Pebble',  'ammo', NULL, 'common', 1, 99, 1, 0.1, 0, '{"tags":["item:ammo","ammo:pebble"],"flavor":"Nature’s cheapest projectile."}'),
 
--- WEAPONS
-('itm_wooden_club',   'Wooden Club',    'weapon', 'mainhand','common',0,1,4,2.5,40,'{"damage":2,"tags":["item:weapon","material:wood"]}'),
-('itm_training_sword','Training Sword', 'weapon', 'mainhand','common',0,1,6,2.0,45,'{"damage":2,"tags":["item:weapon"]}'),
-('itm_iron_dagger',   'Iron Dagger',    'weapon', 'offhand', 'common',0,1,14,1.0,65,'{"damage":3,"tags":["item:weapon","material:iron"]}'),
-('itm_iron_sword',    'Iron Sword',     'weapon', 'mainhand','common',0,1,25,3.5,80,'{"damage":5,"tags":["item:weapon","material:iron"]}'),
-('itm_spear',         'Spear',          'weapon', 'mainhand','common',0,1,20,3.0,75,'{"damage":4,"reach":1,"tags":["item:weapon","material:wood"]}'),
-('itm_short_bow',     'Short Bow',      'weapon', 'mainhand','uncommon',0,1,20,2.0,70,'{"damage":4,"ranged":1,"ammo":"ammo:arrow","tags":["item:weapon","material:wood"]}'),
-('itm_crossbow',      'Crossbow',       'weapon', 'mainhand','uncommon',0,1,35,4.0,90,'{"damage":6,"ranged":1,"ammo":"ammo:bolt","tags":["item:weapon","material:wood","material:iron"]}'),
+-- =========================================================
+-- WEAPONS (starter + a few extra flavor picks)
+-- =========================================================
+('itm_wooden_club',    'Wooden Club',    'weapon','mainhand','common',   0, 1,  4, 2.5, 40, '{"damage":2,"tags":["item:weapon","material:wood"],"flavor":"Simple, honest bonking."}'),
+('itm_training_sword', 'Training Sword', 'weapon','mainhand','common',   0, 1,  6, 2.0, 45, '{"damage":2,"tags":["item:weapon"],"flavor":"Blunt edge—perfect for practice duels."}'),
+('itm_iron_dagger',    'Iron Dagger',    'weapon','offhand','common',    0, 1, 14, 1.0, 65, '{"damage":3,"tags":["item:weapon","material:iron"],"flavor":"A quiet blade for quick problems."}'),
+('itm_iron_sword',     'Iron Sword',     'weapon','mainhand','common',   0, 1, 25, 3.5, 80, '{"damage":5,"tags":["item:weapon","material:iron"],"flavor":"A classic adventurer’s companion."}'),
+('itm_spear',          'Spear',          'weapon','mainhand','common',   0, 1, 20, 3.0, 75, '{"damage":4,"reach":1,"tags":["item:weapon","material:wood"],"flavor":"Keeps teeth away from you."}'),
+('itm_short_bow',      'Short Bow',      'weapon','mainhand','uncommon', 0, 1, 20, 2.0, 70, '{"damage":4,"ranged":1,"ammo":"ammo:arrow","tags":["item:weapon","material:wood"],"flavor":"Light, fast, and forgiving."}'),
+('itm_crossbow',       'Crossbow',       'weapon','mainhand','uncommon', 0, 1, 35, 4.0, 90, '{"damage":6,"ranged":1,"ammo":"ammo:bolt","tags":["item:weapon","material:wood","material:iron"],"flavor":"Point, click, thunk."}'),
+('itm_greatsword', 'Greatsword', 'weapon', 'mainhand', 'uncommon', 0, 1, 50, 6.0, 100, '{"damage":8, "two_handed":true, "tags":["item:weapon","material:iron","heavy"], "flavor":"A massive blade requiring two hands and a stout heart."}'),
+('itm_warhammer', 'Warhammer', 'weapon', 'mainhand', 'uncommon', 0, 1, 15, 2.0, 90, '{"damage":6, "versatile":true, "tags":["item:weapon","material:iron"], "flavor":"The preferred tool for crushing plate armor and skeletons alike."}'),
+('itm_rapier', 'Rapier', 'weapon', 'mainhand', 'uncommon', 0, 1, 25, 2.0, 75, '{"damage":5, "finesse":true, "tags":["item:weapon","material:iron"], "flavor":"A needle-thin blade for the precise and the patient."}'),
+('itm_greataxe', 'Greataxe', 'weapon', 'mainhand', 'uncommon', 0, 1, 30, 7.0, 95, '{"damage":9, "two_handed":true, "tags":["item:weapon","material:iron","heavy"], "flavor":"A wicked, double-bitted axe built for total cleaving."}'),
+('itm_maul', 'Maul', 'weapon', 'mainhand', 'uncommon', 0, 1, 10, 10.0, 110, '{"damage":8, "heavy":true, "tags":["item:weapon","material:iron","material:wood"], "flavor":"Essentially a boulder on a stick. Effective."}'),
+('itm_longbow', 'Longbow', 'weapon', 'mainhand', 'uncommon', 0, 1, 50, 2.0, 80, '{"damage":6, "ranged":true, "heavy":true, "ammo":"ammo:arrow", "tags":["item:weapon","material:wood"], "flavor":"A bow nearly as tall as its wielder."}'),
+('itm_scimitar', 'Scimitar', 'weapon', 'mainhand', 'common', 0, 1, 25, 3.0, 70, '{"damage":4, "finesse":true, "tags":["item:weapon","material:iron"], "flavor":"A curved blade that flows like water in a desert wind."}'),
 
--- ARMOR
-('itm_cloth_cap',     'Cloth Cap',      'armor','helmet','common',0,1,4,0.4,30,'{"armor":1,"tags":["item:armor","material:cloth"]}'),
-('itm_cloth_tunic',   'Cloth Tunic',    'armor','torso','common',0,1,8,1.5,50,'{"armor":1,"tags":["item:armor","material:cloth"]}'),
-('itm_leather_cap',   'Leather Cap',    'armor','helmet','common',0,1,12,1.2,60,'{"armor":1,"tags":["item:armor","material:leather"]}'),
-('itm_leather_vest',  'Leather Vest',   'armor','torso','common',0,1,22,4.0,90,'{"armor":2,"tags":["item:armor","material:leather"]}'),
+-- =========================================================
+-- ARMOR (starter)
+-- =========================================================
+('itm_cloth_cap',    'Cloth Cap',      'armor','helmet','common', 0,1, 4, 0.4,30,'{"armor":1,"tags":["item:armor","material:cloth"],"flavor":"Keeps sun off and pride intact."}'),
+('itm_cloth_tunic',  'Cloth Tunic',    'armor','torso','common',  0,1, 8, 1.5,50,'{"armor":1,"tags":["item:armor","material:cloth"],"flavor":"Better than fighting in pajamas."}'),
+('itm_leather_cap',  'Leather Cap',    'armor','helmet','common', 0,1,12, 1.2,60,'{"armor":1,"tags":["item:armor","material:leather"],"flavor":"Smells like adventure and old rain."}'),
+('itm_leather_vest', 'Leather Vest',   'armor','torso','common',  0,1,22, 4.0,90,'{"armor":2,"tags":["item:armor","material:leather"],"flavor":"Tough enough for brambles and bruises."}'),
+('itm_padded_armor', 'Padded Armor', 'armor', 'torso', 'common', 0, 1, 5, 8.0, 40, '{"armor":1, "disadvantage_stealth":true, "tags":["item:armor","material:cloth"], "flavor":"Thick, quilted layers. Hot, itchy, but better than nothing."}'),
+('itm_hide_armor', 'Hide Armor', 'armor', 'torso', 'common', 0, 1, 10, 12.0, 60, '{"armor":2, "tags":["item:armor","material:leather"], "flavor":"Rough-hewn furs and thick pelts from a successful hunt."}'),
+('itm_scale_mail', 'Scale Mail', 'armor', 'torso', 'uncommon', 0, 1, 50, 45.0, 120, '{"armor":4, "disadvantage_stealth":true, "tags":["item:armor","material:iron"], "flavor":"Overlapping metal scales that clatter like a thousand coins."}'),
+('itm_breastplate', 'Breastplate', 'armor', 'torso', 'rare', 0, 1, 400, 20.0, 150, '{"armor":4, "tags":["item:armor","material:iron"], "flavor":"Polished steel protecting the vitals without sacrificing mobility."}'),
 
--- TRINKETS
-('itm_lucky_coin',    'Lucky Coin',     'trinket',NULL,'uncommon',0,1,15,0.1,0,'{"luck":1,"tags":["item:trinket"]}'),
-('itm_glow_pebble',   'Glow Pebble',    'trinket',NULL,'common',0,1,8,0.2,0,'{"light":1,"tags":["item:trinket","use:light"]}'),
-('itm_brave_badge',   'Brave Badge',    'trinket',NULL,'uncommon',0,1,20,0.2,0,'{"brave":1,"tags":["item:trinket"]}'),
+-- =========================================================
+-- HEAVY ARMOR & SHIELDS
+-- =========================================================
+('itm_chain_mail', 'Chain Mail', 'armor', 'torso', 'uncommon', 0, 1, 75, 55.0, 180, '{"armor":6, "disadvantage_stealth":true, "min_strength":13, "tags":["item:armor","material:iron"], "flavor":"A mesh of interlocking rings. Classic knightly protection."}'),
+('itm_plate_armor', 'Full Plate', 'armor', 'torso', 'epic', 0, 1, 1500, 65.0, 300, '{"armor":8, "disadvantage_stealth":true, "min_strength":15, "tags":["item:armor","material:iron"], "flavor":"A masterpiece of the forge. You are a walking fortress."}'),
+('itm_shield_wooden', 'Wooden Shield', 'armor', 'offhand', 'common', 0, 1, 10, 6.0, 80, '{"armor":2, "tags":["item:armor","material:wood"], "flavor":"A sturdy oak disc bound with iron."}'),
+('itm_shield_steel', 'Steel Shield', 'armor', 'offhand', 'uncommon', 0, 1, 20, 10.0, 150, '{"armor":2, "tags":["item:armor","material:iron"], "flavor":"A polished heater shield bearing the scars of many battles."}'),
 
--- HERBS
-('itm_healing_herb',  'Healing Herb',   'resource',NULL,'common',1,20,4,0.1,0,'{"tags":["item:resource","ingredient:herb","station:alchemy"]}'),
-('itm_mint_leaf',     'Mint Leaf',      'resource',NULL,'common',1,30,2,0.05,0,'{"tags":["item:resource","ingredient:herb","station:alchemy"]}'),
-('itm_sunpetal',      'Sunpetal',       'resource',NULL,'uncommon',1,20,6,0.05,0,'{"tags":["item:resource","ingredient:herb","station:alchemy"]}');
+-- =========================================================
+-- SPECIAL/MAGICAL TIER (D&D Flavor)
+-- =========================================================
+('itm_sunblade', 'Sunblade', 'weapon', 'mainhand', 'epic', 0, 1, 5000, 0.0, 0, '{"damage":10, "finesse":true, "light":true, "damage_type":"radiant", "tags":["item:weapon","magical"], "flavor":"A hilt that projects a blade of pure, burning sunlight."}'),
+('itm_mithral_shirt', 'Mithral Chain Shirt', 'armor', 'torso', 'rare', 0, 1, 800, 10.0, 200, '{"armor":3, "tags":["item:armor","material:mithral"], "flavor":"Gleams like silver but is light as silk. Can be worn under clothes."}'),
+('itm_adamantine_plate', 'Adamantine Plate', 'armor', 'torso', 'legendary', 0, 1, 5000, 65.0, 1000, '{"armor":8, "crit_immune":true, "tags":["item:armor","material:adamantine"], "flavor":"Forged from the heart of a fallen star. Nothing breaks this."}'),
+
+-- =========================================================
+-- TRINKETS (kid-safe magic vibes)
+-- =========================================================
+('itm_lucky_coin',   'Lucky Coin',      'trinket',NULL,'uncommon',0,1,15,0.1,0,'{"luck":1,"tags":["item:trinket"],"flavor":"Warm in your palm when you need it."}'),
+('itm_glow_pebble',  'Glow Pebble',     'trinket',NULL,'common',  0,1, 8,0.2,0,'{"light":1,"tags":["item:trinket","use:light"],"flavor":"A pebble that refuses to be ordinary."}'),
+('itm_brave_badge',  'Brave Badge',     'trinket',NULL,'uncommon',0,1,20,0.2,0,'{"brave":1,"tags":["item:trinket"],"flavor":"Feels heavier when you’re scared—like it’s reminding you."}'),
+('itm_whisper_charm','Whisper Charm',   'trinket',NULL,'rare',    0,1,55,0.1,0,'{"stealth":1,"tags":["item:trinket"],"flavor":"Makes your footsteps sound like distant snow."}'),
+('itm_spark_ring',   'Spark Ring',      'trinket',NULL,'rare',    0,1,60,0.1,0,'{"spark":1,"tags":["item:trinket"],"flavor":"A tiny crackle follows your grin."}'),
+
+-- =========================================================
+-- HERBS (alchemy ingredients)
+-- =========================================================
+('itm_healing_herb', 'Healing Herb',    'resource',NULL,'common',  1,20, 4,0.1,0,'{"tags":["item:resource","ingredient:herb","station:alchemy"],"flavor":"Smells clean—like a sunny morning."}'),
+('itm_mint_leaf',    'Mint Leaf',       'resource',NULL,'common',  1,30, 2,0.05,0,'{"tags":["item:resource","ingredient:herb","station:alchemy"],"flavor":"Fresh enough to wake a sleepy wizard."}'),
+('itm_sunpetal',     'Sunpetal',        'resource',NULL,'uncommon',1,20, 6,0.05,0,'{"tags":["item:resource","ingredient:herb","station:alchemy"],"flavor":"Golden petals that hold warmth."}'),
+('itm_nightshade',   'Nightshade (Tame)', 'resource',NULL,'rare',  1,10, 18,0.05,0,'{"tags":["item:resource","ingredient:herb","station:alchemy"],"flavor":"Handled carefully; used in tiny, safe doses."}'),
+('itm_dreamroot',    'Dreamroot',       'resource',NULL,'rare',    1,10, 22,0.08,0,'{"tags":["item:resource","ingredient:herb","station:alchemy"],"flavor":"Smells like rain and forgotten songs."}');
 
 
 
@@ -618,50 +682,144 @@ INSERT OR IGNORE INTO item_defs
    Tag links (query-friendly)
    ========================================================= */
 
+-- Materials
 INSERT OR IGNORE INTO item_def_tags (item_def_id, tag_id) VALUES
 ('itm_wood', 'material:wood'),
 ('itm_stone', 'material:stone'),
 ('itm_iron_ore', 'material:iron'),
 ('itm_leather', 'material:leather'),
 ('itm_cloth', 'material:cloth'),
+('itm_iron_ingot', 'material:iron'),
+('itm_leather_strap', 'material:leather'),
+('itm_thread', 'material:cloth'),
+('itm_rivets', 'material:iron'),
+('itm_shield_wooden', 'material:wood'),
+('itm_shield_steel', 'material:iron'),
+('itm_mithral_shirt', 'material:mithral'),
+('itm_adamantine_plate', 'material:adamantine');
 
-('itm_iron_ingot','material:iron'),
-('itm_leather_strap','material:leather'),
-
-('itm_bread', 'item:food'),
-('itm_jerky', 'item:food'),
-
-('itm_iron_sword', 'item:weapon'),
+-- Weapons (D&D grouped)
+INSERT OR IGNORE INTO item_def_tags (item_def_id, tag_id) VALUES
+('itm_wooden_club', 'item:weapon'),
+('itm_training_sword', 'item:weapon'),
 ('itm_iron_dagger', 'item:weapon'),
+('itm_iron_sword', 'item:weapon'),
+('itm_spear', 'item:weapon'),
 ('itm_short_bow', 'item:weapon'),
 ('itm_crossbow', 'item:weapon'),
+('itm_greatsword', 'item:weapon'),
+('itm_warhammer', 'item:weapon'),
+('itm_rapier', 'item:weapon'),
+('itm_greataxe', 'item:weapon'),
+('itm_maul', 'item:weapon'),
+('itm_longbow', 'item:weapon'),
+('itm_scimitar', 'item:weapon'),
+('itm_sunblade', 'item:weapon');
 
-('itm_leather_cap', 'item:armor'),
-('itm_leather_vest', 'item:armor'),
+-- Armor
+INSERT OR IGNORE INTO item_def_tags (item_def_id, tag_id) VALUES
 ('itm_cloth_cap', 'item:armor'),
 ('itm_cloth_tunic', 'item:armor'),
+('itm_leather_cap', 'item:armor'),
+('itm_leather_vest', 'item:armor'),
+('itm_padded_armor', 'item:armor'),
+('itm_hide_armor', 'item:armor'),
+('itm_scale_mail', 'item:armor'),
+('itm_breastplate', 'item:armor'),
+('itm_chain_mail', 'item:armor'),
+('itm_plate_armor', 'item:armor'),
+('itm_shield_wooden', 'item:armor'),
+('itm_shield_steel', 'item:armor'),
+('itm_mithral_shirt', 'item:armor'),
+('itm_adamantine_plate', 'item:armor');
 
-('itm_healing_herb', 'ingredient:herb'),
-('itm_mint_leaf', 'ingredient:herb'),
-('itm_sunpetal', 'ingredient:herb'),
-('itm_meat', 'ingredient:meat'),
+-- Food & Recovery
+INSERT OR IGNORE INTO item_def_tags (item_def_id, tag_id) VALUES
+('itm_bread', 'item:food'),
+('itm_jerky', 'item:food'),
+('itm_rations', 'item:food'),
+('itm_cheese', 'item:food'),
+('itm_honey', 'item:food'),
+('itm_water_flask', 'item:food'),
+('itm_bread', 'use:heal'),
+('itm_cheese', 'use:heal'),
+('itm_honey', 'use:heal'),
+('itm_jerky', 'use:stamina'),
+('itm_rations', 'use:stamina'),
+('itm_water_flask', 'use:stamina');
 
+-- Medical & Potions
+INSERT OR IGNORE INTO item_def_tags (item_def_id, tag_id) VALUES
+('itm_bandage', 'item:medical'),
+('itm_splint', 'item:medical'),
+('itm_bandage', 'use:heal'),
+('itm_splint', 'use:heal'),
+('itm_small_potion', 'item:potion'),
+('itm_medium_potion', 'item:potion'),
+('itm_stamina_draught', 'item:potion'),
+('itm_focus_tonic', 'item:potion'),
+('itm_small_potion', 'use:heal'),
+('itm_medium_potion', 'use:heal'),
+('itm_stamina_draught', 'use:stamina'),
+('itm_focus_tonic', 'use:focus');
+
+-- Tools & Utility
+INSERT OR IGNORE INTO item_def_tags (item_def_id, tag_id) VALUES
+('itm_torch', 'item:tool'),
+('itm_flint_steel', 'item:tool'),
+('itm_rope', 'item:tool'),
+('itm_lockpicks', 'item:tool'),
+('itm_torch', 'use:light'),
+('itm_flint_steel', 'use:fire'),
+('itm_rope', 'use:climb'),
+('itm_lockpicks', 'use:lockpick');
+
+-- Repair Kits & Components
+INSERT OR IGNORE INTO item_def_tags (item_def_id, tag_id) VALUES
+('itm_repair_kit_iron', 'item:tool'),
+('itm_repair_kit_leather', 'item:tool'),
+('itm_repair_kit_cloth', 'item:tool'),
+('itm_repair_kit_iron', 'use:repair'),
+('itm_repair_kit_leather', 'use:repair'),
+('itm_repair_kit_cloth', 'use:repair'),
+('itm_iron_ingot', 'use:repair'),
+('itm_leather_strap', 'use:repair'),
+('itm_thread', 'use:repair'),
+('itm_rivets', 'use:repair'),
+('itm_wax', 'use:repair'),
+('itm_pitch', 'use:repair');
+
+-- Ammo
+INSERT OR IGNORE INTO item_def_tags (item_def_id, tag_id) VALUES
 ('itm_arrow', 'item:ammo'),
 ('itm_bolt', 'item:ammo'),
 ('itm_pebble', 'item:ammo'),
+('itm_arrow', 'ammo:arrow'),
+('itm_bolt', 'ammo:bolt'),
+('itm_pebble', 'ammo:pebble');
 
-('itm_glow_pebble', 'item:trinket'),
+-- Alchemy & Ingredients
+INSERT OR IGNORE INTO item_def_tags (item_def_id, tag_id) VALUES
+('itm_healing_herb', 'ingredient:herb'),
+('itm_mint_leaf', 'ingredient:herb'),
+('itm_sunpetal', 'ingredient:herb'),
+('itm_nightshade', 'ingredient:herb'),
+('itm_dreamroot', 'ingredient:herb'),
+('itm_meat', 'ingredient:meat'),
+('itm_healing_herb', 'station:alchemy'),
+('itm_mint_leaf', 'station:alchemy'),
+('itm_sunpetal', 'station:alchemy'),
+('itm_nightshade', 'station:alchemy'),
+('itm_dreamroot', 'station:alchemy');
+
+-- Trinkets
+INSERT OR IGNORE INTO item_def_tags (item_def_id, tag_id) VALUES
 ('itm_lucky_coin', 'item:trinket'),
-
-('itm_repair_kit_iron', 'use:repair'),
-('itm_repair_kit_leather', 'use:repair'),
-('itm_iron_ingot', 'use:repair'),
-('itm_leather_strap', 'use:repair'),
-
-('itm_bandage', 'use:heal'),
-('itm_small_potion', 'use:heal'),
-('itm_medium_potion', 'use:heal'),
-('itm_stamina_draught', 'use:stamina');
+('itm_glow_pebble', 'item:trinket'),
+('itm_brave_badge', 'item:trinket'),
+('itm_whisper_charm', 'item:trinket'),
+('itm_spark_ring', 'item:trinket'),
+('itm_glow_pebble', 'use:light');
 
 
 
@@ -670,26 +828,42 @@ INSERT OR IGNORE INTO item_def_tags (item_def_id, tag_id) VALUES
    ========================================================= */
 
 INSERT OR IGNORE INTO recipes (id, name, output_item_def_id, output_qty, station, difficulty, meta_json) VALUES
-('rcp_campfire_jerky',      'Dry Jerky',            'itm_jerky',       2, 'campfire', 1, '{"timeSec":20}'),
-('rcp_campfire_bread',      'Bake Bread',           'itm_bread',       2, 'campfire', 1, '{"timeSec":20}'),
+-- =========================================================
+-- CAMPFIRE (Survival & Basic Food)
+-- =========================================================
+('rcp_campfire_rations',   'Pack Travel Rations', 'itm_rations',     1, 'campfire',  1, '{"timeSec":30}'),
+('rcp_campfire_honey',    'Process Wild Honey',  'itm_honey',       1, 'campfire',  2, '{"timeSec":40}'),
 
-('rcp_bandage',             'Make Bandage',         'itm_bandage',     1, 'workbench', 1, '{"timeSec":15}'),
-('rcp_small_potion',        'Brew Small Potion',    'itm_small_potion',1, 'alchemy',    2, '{"timeSec":25}'),
-('rcp_medium_potion',       'Brew Medium Potion',   'itm_medium_potion',1,'alchemy',    4, '{"timeSec":45}'),
-('rcp_stamina_draught',     'Brew Stamina Draught', 'itm_stamina_draught',1,'alchemy',  3, '{"timeSec":35}'),
+-- =========================================================
+-- ALCHEMY STATION (Advanced Draughts)
+-- =========================================================
+('rcp_focus_tonic',        'Distill Focus Tonic', 'itm_focus_tonic', 1, 'alchemy',   4, '{"timeSec":50}'),
 
-('rcp_iron_ingot',          'Smelt Iron Ingot',     'itm_iron_ingot',  1, 'forge',      2, '{"timeSec":25}'),
-('rcp_leather_strap',       'Cut Leather Straps',   'itm_leather_strap',2,'workbench',  1, '{"timeSec":15}'),
+-- =========================================================
+-- FORGE (D&D Martial Gear)
+-- =========================================================
+('rcp_forge_greatsword',   'Forge Greatsword',    'itm_greatsword',  1, 'forge',     5, '{"timeSec":75}'),
+('rcp_forge_warhammer',    'Forge Warhammer',     'itm_warhammer',   1, 'forge',     3, '{"timeSec":45}'),
+('rcp_forge_rapier',       'Forge Rapier',        'itm_rapier',      1, 'forge',     4, '{"timeSec":55}'),
+('rcp_forge_greataxe',     'Forge Greataxe',      'itm_greataxe',    1, 'forge',     5, '{"timeSec":80}'),
+('rcp_forge_maul',         'Forge Maul',          'itm_maul',        1, 'forge',     4, '{"timeSec":70}'),
+('rcp_forge_scimitar',     'Forge Scimitar',      'itm_scimitar',    1, 'forge',     3, '{"timeSec":50}'),
+('rcp_forge_steel_shield', 'Forge Steel Shield',  'itm_shield_steel',1, 'forge',     3, '{"timeSec":45}'),
 
-('rcp_arrow_bundle',        'Make Arrows',          'itm_arrow',       15,'workbench',  2, '{"timeSec":25}'),
-('rcp_bolt_bundle',         'Make Bolts',           'itm_bolt',        12,'workbench',  2, '{"timeSec":25}'),
+('rcp_forge_scale_mail',   'Forge Scale Mail',    'itm_scale_mail',  1, 'forge',     4, '{"timeSec":90}'),
+('rcp_forge_breastplate',  'Forge Breastplate',   'itm_breastplate', 1, 'forge',     5, '{"timeSec":110}'),
+('rcp_forge_chain_mail',   'Forge Chain Mail',    'itm_chain_mail',  1, 'forge',     4, '{"timeSec":120}'),
+('rcp_forge_plate_armor',  'Forge Full Plate',    'itm_plate_armor', 1, 'forge',     6, '{"timeSec":240}'),
 
-('rcp_iron_sword',          'Forge Iron Sword',     'itm_iron_sword',  1, 'forge',      3, '{"timeSec":35}'),
-('rcp_leather_cap',         'Stitch Leather Cap',   'itm_leather_cap', 1, 'workbench',  2, '{"timeSec":25}'),
-('rcp_leather_vest',        'Stitch Leather Vest',  'itm_leather_vest',1, 'workbench',  3, '{"timeSec":35}'),
-
-('rcp_repair_kit_iron',     'Assemble Metal Repair Kit', 'itm_repair_kit_iron', 1, 'workbench', 3, '{"timeSec":30,"uses":3}'),
-('rcp_repair_kit_leather',  'Assemble Leather Repair Kit','itm_repair_kit_leather',1,'workbench',3,'{"timeSec":30,"uses":3}');
+-- =========================================================
+-- WORKBENCH (Leather, Cloth, & Woodworking)
+-- =========================================================
+('rcp_padded_armor',       'Quilt Padded Armor',  'itm_padded_armor','1','workbench', 2, '{"timeSec":60}'),
+('rcp_hide_armor',         'Cure Hide Armor',     'itm_hide_armor',  1, 'workbench', 3, '{"timeSec":70}'),
+('rcp_wooden_shield',      'Craft Wooden Shield', 'itm_shield_wooden',1,'workbench', 2, '{"timeSec":40}'),
+('rcp_rope_bundle',        'Weave Rope (50ft)',   'itm_rope',        1, 'workbench', 2, '{"timeSec":45}'),
+('rcp_splint_kit',         'Assemble Splint Kit', 'itm_splint',      1, 'workbench', 3, '{"timeSec":30}'),
+('rcp_repair_kit_cloth',   'Assemble Cloth Repair Kit', 'itm_repair_kit_cloth', 1, 'workbench', 2, '{"timeSec":25,"uses":3}');
 
 INSERT OR IGNORE INTO recipe_ingredients (recipe_id, item_def_id, qty) VALUES
 ('rcp_campfire_bread', 'itm_wood', 1),
