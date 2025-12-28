@@ -1,8 +1,8 @@
 {
   "id": "hearthlands",
   "name": "The Hearthlands",
-  "width": 100,
-  "height": 70,
+  "width": 160,
+  "height": 100,
   "legend": {
     ".": "grass",
     "f": "forest",
@@ -12,78 +12,106 @@
     "s": "stone"
   },
   "tiles": [
-    "....................................................................................ffff....",
-    "........fffffff.......................fffffff.....................fffffff.........fffff.....",
-    ".......fffffffff.....................fffffffff...................fffffffff........fffff.....",
-    ".......fffff..ff.....................fffff..ff...................fffff..ff........ffff......",
-    ".......fffff..........................fffff.......................fffff...........ffff......",
-    "....................hhhhhhhh.......................hhhhhhhh.......................hhhhhh....",
-    "....................hhhhhhhh.......................hhhhhhhh.......................hhhhhh....",
-    "....................hhhhhhhh.......................hhh..hhh.......................hhh..h....",
-    "....................hhhhhhhh.......................hhh..hhh.......................hhh..h....",
-    "..........wwwwwwwwwwhhhhhhhhhwwwwwwwww..................wwwwwwwwww.....................w....",
-    "..........wwwwwwwwwwwhhhhhhhhh..........................w........w.....................w....",
-    "..........wwwwwwwwww....................................w........w.....................w....",
-    "..........wwwwwwwwww....................................w........w.........rrrrrrrrrrrrr....",
-    "..........wwwwwwwwww....................................w........w.........r...........r....",
-    "..........wwwwwwwwwwwwwwwwwwww...........................wwwwwwwwww.........r...........r...",
-    "..........wwwwwwwwww...................................................ffff.....r..........r",
-    "..........wwwwwwwwww..................................................ffffff....r..........r",
-    "..........wwwwwwwwww..................rrrrrrrrrrrrrrrrrrrr................ff....r..........r",
-    "......................................r..................r.....................r...........r",
-    "....fffffff...........................r..................r...............ffff..r...........r",
-    "...fffffffff..........................r..................r..............ffffff.r...........r",
-    "...fffff..ff..........................r..................r..............fffff..r...........r",
-    "...fffff..............................r..................r.....................r...........r",
-    "......................................r..................r.....................r...........r",
-    ".........................fffffff......r..................r...........hhhh......r...........r",
-    "........................fffffffff.....r..................r...........hhhh......r...........r",
-    "........................fffff..ff.....r..................r...........hhh.......r...........r",
-    "........................fffff.........r..................r...........hhh.......r...........r",
-    "......................................r..................r.....................r...........r",
-    "..............hhhhhhhh................r..................r.....................r...........r",
-    "..............hhhhhhhh................r..................r.....................r...........r",
-    "..............hhh..hhh................r..................r.....................r...........r",
-    "..............hhh..hhh................r..................r.....................r...........r",
-    "..............hhh..hhh................r..................r.....................r...........r",
-    "......................................r..................r.....................r...........r",
-    "......................................r..................r.....................r...........r",
-    "........fffffff.......................r..................r.....................r...........r",
-    ".......fffffffff......................r..................r.....................r...........r",
-    ".......fffff..ff......................r..................r.....................r...........r",
-    ".......fffff..........................r..................r.....................r...........r",
-    "......................................r..................r.....................r...........r",
-    "....................rrrrrrrrrrrrrrrrrrr..................rrrrrrrrrrrrrrrrr.....r...........r",
-    "......................................r..................r.....................r...........r",
-    "......................................r..................r.....................r...........r",
-    "......................................r..................r.....................r...........r",
-    "......................................r..................r.....................r...........r",
-    "....................rrrrrrrrrrrrrrrrrrr..................rrrrrrrrrrrrrrrrr.....r...........r",
-    "......................................r..................r.....................r...........r",
-    "..............fffffff.................r..................r..............fffff..r...........r",
-    ".............fffffffff................r..................r.............ffffff..r...........r",
-    ".............fffff..ff................r..................r.............fffff...r...........r",
-    ".............fffff....................r..................r.....................r...........r",
-    "......................................r..................r.....................r...........r",
-    "......................................r..................r.....................r...........r",
-    "...........hhhhhhhh...................r..................r.....................rrrrrrrrrrrrr",
-    "...........hhhhhhhh...................r..................r......................hhhhhhhhhhhh",
-    "...........hhh..hhh...................r..................r......fffffff..........hhh..hhhhhh",
-    "...........hhh..hhh...................r..................r.....fffffffff.........hhh..hhhhhh",
-    "...........hhh..hhh...................r..................r.....fffff..ff.........hhh..hhhhhh",
-    "......................................r..................r.....fffff.............hhhhhhhhhhh",
-    "......................................r..................r.......................hhhhhhhhhhh",
-    "......................................r..................r..................................",
-    "....................fffffff...........rrrrrrrrrrrrrrrrrrrr.....................hhhhhhhhhhh..",
-    "...................fffffffff....................................................hhhhhhhh....",
-    "...................fffff..ff..................rrrrrrrrrrrrrrrrrrrr.............hhhhhhhh.....",
-    "...................fffff......................r..................r.............hhhhhhhh.....",
-    "..............................................r..................r..................h.......",
-    "........wwwwwwwwwwwwwwwwwww...................r..................r...........wwwwwwwwww.....",
-    "........wwwwwwwwwwwwwwwwwww...................r..................r...........wwwwwwwwww.....",
-    "........wwwwwwwwwwwwwwwwwww...................r..................r...........wwwwwwwwww.....",
-    "........wwwwwwwwwwwwwwwwwww...................rrrrrrrrrrrrrrrrrrrr...........wwwwwwwwww.....",
-    "............................................................................................"
+    "....ff.fffhffhfff..f..........hh.............h...h........h.hhhhh.h.h.h........h......h...........................hhh...whwhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "...hffff.ffhhffffffff...h..h...hh...........h..h.h.......h.h.hhh..hh.h..........hh.....hh..........f..h.........ffhff.hh.whhhhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "..hffffffff.f..fhfff...hhhh...h..h.......h...h.....h....f.hhhh.hhhh.h........hhh..h.hhhh............h.h.h.fffff.f....fhh..hwhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "...fff..ffsfh.fffffffffhh.h...hh...........hhh.h........h.hhh...hhhh.......h....hhhh..hh.......h.h..h.h..f..f.hff.ffffhh....whhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "....fffffhfffhffff..ff....h.h..h.h.......hhhh....h........hh...h.hhhhhhh...hh..h.hh..h........h.h...hhhhhf.....f.fh..fhffhh..wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "....ffff.fsshff.hf.....hh.hhhh...h......fhh.hhh.h..hh.......h..hhh.h.h......h..hh..h..h.h.....hhhhh.h.hh.hhff..hhhf.fff.fhh...hwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "..hfffhffffffffffff..f..hhh.h..hhh..f.fff.ffhf.hh.hh........hhhh.hh.h.h......hh.h.h.hhh.hhh...hhh.h.h..fhhffff.hf..fh..fff...h.wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "..hf..fff.fffwfff.hf..hhh...h..h..f..fff.h.hffh.........h..h.hhhhhh..h.hh...hhhh.hhhh.h.......h...hh.h.f.h....hffh.ffh..ffhhh...wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "..h..fhhfffwhfffffh.f..s.hh...h..hf...ff.fhffhfff........h..hhh....h.h........h.......h.h........h...h.f.hf.f.ff.hfhhff..fh.h.h..wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".....fffhfffhhwffhf....s.s.hh.h.fhffff.fff.hhhh.f...........hh..h.h.h..h......h.hhhh...h.h..........h..fff.ff..f.ff.ff.fhh.hh.h..wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "....h.ff.fffssfwwff.....hh..hhf.ff.ff.fffffffffffhf.......h..hhhh.h.hh.rrrr.....h..hh...h......fh..fhh.ff.h....fffh.h.hf..h.......wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "......ff..fffsffhww.......h...fffff.ff.frrrrrrrrrrrrrrrrrrh.hhh..h..hhhr..r....h..h....hh......fhh.f..h.hff.fffff.hff.f.fhhh......wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "......hhhfsfff.w.wwww.....h..hf...ff.ffrrrrf.ff....frrrrrrrrrrrrrrrrrhrr..rrrrrh..h...hrrrrrr...fh.f.h..ff.fff...fff..f.hfhhh.....wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "...........s.s..wwwwww.......fffff.rrrrrfff.fff.fff.f........hhh.hhhrrrrrrrrrrrrrh...hrr.......ff..fh.f.f..ff.ff.hff..fhfh........wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............s...rwwwwwww.....f..fffrfff.....ff.ff.f.......................rrrrrrrrrrrrr........f..ff.f.ff.ff..f.f.ffh.fff.........wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "................r..wwwwwww....f.rrrrfff.f.f.ff.fff..f..................................f....f...f..f....ff.fffff.ffff.f..........wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "................r...wwwwwwwwffffrffff.f..f.ff.ff.fff.....................................ff....ffff...ff.ffff..fffff...f.........wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "...f............r....wwwwwwwffrrr.f.ffffffffff..ff.....................................fff...ffffff.ff....f...f.f...............wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............rrrrrrrrrrrrwwwf..rw.ff.fffff.fffff...ffff........f.........................f.f.ff.fff.f....f.f..f.f.f.ff.f........wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............r.......r..rrrrwwwrw.ff..f.ffff.fff.f..f.f........................................fffff..fff.......f.f.f..........wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "...f........rrrrrrrrrrrrrrrrrrr.wfffffff.ffff..ffffff..fff.............................f..f.ff.f..f..f.fffff.................wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............r.......r........rrw.wfwwffffffffsff.fffff..fff..............................f.fff.f.f.ffffff..ffff.............wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............r.......r........rr.wwffffff.ffffsfffffffff...fff...........................f....fff...fff....f....f...........wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............r.......r...f.....rffwfffwfff...fsfff.ffff.f..ff............................ff.ffffffffff...ff.f..............wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............r.......r........fr...fwwffffffffff.ff...fff.ffff.......f........................ff..fffffff..ff.f..f........wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............r.......r.........rfff...fwwfw.ff..fff.ff.f.ffffff..ffff.fff.........................fff.f..fff.ff.fff......wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............r.......r.........rf..ff.fwwwffff.ffffffff.fff.fff.f.f..fff.ff....................f..ffffff..ffff...f......wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............r.......r.........rrrff..fwfwfwfwfffffffff..f.f..ff...fs..f.fff.......................f..f.......f.f......wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............r.......r...........rf...ffffffwwfwff.f..ff..ff.......ff...fff..f....................f.f..ffffff.ffff....wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............r.......r...........rrrrrrrrrwffffffff.fff.f.fff...ff.f..s.ff.f........................fff.ffffff..f.f...wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............r.......r...............f.f.rrffffwfffff.fffffff..ff..ff...f.f.f..............h.......f.fffff.f...f.....wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............r.......rrrrrrrrrrrrrrrrrr..frr.fffffwff.ffff..f..ff..f...ffff.f.....................fff.f..ff.f.f.f.f..wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".....f......r.................ff.ff.fr....rf.wffwwffff.f.f.f...ff.fffff.ff..f......................fff.ff.f.ff.f.f.wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............r.............ffff.f.fff.rrrr.rrrrfffwwfwff..f.fffff.ffff.fff.ff........................fff.f..fff.ff..wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............r...........ff.f...ff.f.ffffrrr..rrfffwffwf..fffffff.f...f.fffff.ff.......................f....ff..f...wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............r...........ff..ff..f.ff..f..frr..r.fwfwfwwf.f.f.f...f..f.ff..ff........................f....f...f.....wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............r.........f.ff.f.ff.ff.ff.fffffr..rff.fwfffw..f.ff..f.fffff..fffff..........................f..ff.......wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............r...........ff.f.f..f..fff....frr.rrf..fwwff....ff.ffffffff.f.f..f......................................wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............r........f...fffff.ff.fff....fffrr.rrrrrfwww....ff...ffff.ff.f..ff.......................................wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".......................ff.f..ff.fff...f...fffr.....rrwwwwww.f.ff..f.f.ffff..f........................................wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "....................fff..ffff..ff...f.fff.ff.r......rwwwwwwwwf.f....fff.f.ff..........................................wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "......................f.fffffffff.ff....f....r......rwwwwwwwwfffff...ff....f...........................................wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".....................f..f..f.fffffff.fff.f.ffr......rrrwwwwwwwwf.....ff.................................................wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "....................fff.ff..ffffff...f.f..f..r........rrrrwwwwwww...fffff..................................f.............wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "...................ffff.fffff..ff.fffff.f.f.fr...........rrrrwwwww..f.........h.........................................f.wwwwwwwwhwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "...........................fff.ff.ff.ffff..f.r..............rrwwwww.......................................................hwwwhhwwhwwhwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "....................fff.f..f.ff.fffffffffff..rrrrrrrrrrrrrrrrrrwwwww............................................h..........whwwwwhwwwhhhwwwwhwwwwwwwwwwwwwwwwwww",
+    ".........f.............fff.fff...f..f..f.....r..r...............wwwww.......................................................whhwwwhwhhwwhwwwhhwwwwwwwwwwwwwwwwww",
+    "......................f..ff..f.fffff.ff..f...r..r................wwwww....................................................h..whhwwwwhhwwhhhhhwhhwwhwwwwwwwwwwwww",
+    "....................f...ff.f.fff.....ff.f.fffr..r.................wwwwwwww...............................................hhh..hhhwwhhhhhhhhhwwwhwwhhwwwwwwwwwwww",
+    ".....................ff..ffff...f...f..fffff.rrrrrrrrrrr...........wwwwwwww........f.....................................h..hhwwhhhhhhhhhhwwwhwhhwhhwwwwwwwwwwww",
+    "..........................fff..f..ffff.fff...r..r...f.fr.fff........wwwwwwwww...........................................h.hhhhhwhhwhwwhwwwhwhwwhwwwwwwwwwwwwwwww",
+    "......h...............ffff...fff..ffffff.....r..rfff.ffrrrrrrrrr.......wwwwwww..............f........................hhhhhhhh..whwhhwwwhhhhhwhhwwhwwwwwwwwwwwwww",
+    "..............s..f.ff..ffff..f..f...ff.......r..rf.ffrrrrf..fffr.........wwwwwww.wwwwww..................................hhhhh.hwhhhhwhhhwhhhhhhwhwhwwhwwwwwwwww",
+    "............ff.f.ff...fff.fff..f.f...f.ff....r..r..rrrf...ff...rrrrr.......wwwwwwwwwwwwww.........................hhh.hhhh..hhhwhhhhhhhhhhwhhhwwhhwhhhwhwwwwwwww",
+    "............fs..f..ff.f.ff....fff.ff.ff......rr.r..rff..f.f.f.frfffrr.......wwwwwwwwwwwwwwww..................h..h....hhhhhhhhhhhwhwhhhhhhhhhwhhhhhwhwhwwwwwwwww",
+    "..........ff.f...f....ff....f..f.f...f.......frrrrrrf.fff.fff.ffrf.frrr.......wwwwwwwwwwwwwww.................hhhh..h.h.hhhhh..hhhhhhhwhhhhhhhhfwwhhwhhhwwwwwwww",
+    ".........f...ffffff...f.fff........f.........f..r...f.ffrfrrrffrff.f.fr................wwwwwwww............hhh.hhhhh.hhhhfhhhhhhwhwwhhhhfhwhfwhfwhffhwhhwwwwwwww",
+    "...........ff.fff...f..f..f.f................f..rrrrrrfrrf.fff.ffrf.f.rrrrrrrrrrrrr.......wwwwww..wwwww.hhhhhhh.h.h...h...h.hhhhhwhfhffffffhwfhfwfhffhwwwwwwwwww",
+    "........f....ff.ff..f..f.f..rrrrrrrrrrrr....ff.f.f..ffff.fffffff.frr..f......wwwwwr........wwwwwwwwwwwwhh.h..h..hhhh.hhhhh.hhhhhhhhffhfwfhffhhwffhwhhwwwwwwwwwww",
+    ".........fff.ff..ffffffffffrrf........hrrrrrrrf.fffff.ff.fffffffffff..f.f....wwwwwr..........wwwwwwwwww..hhh.hh.h.hh.hh.hhhhwhhhhhhhwhwhffwfhhhwhhhwwhwwwwwwwwww",
+    "........ff.ff.f...ff..ff.rrrff....h...h...h.frrff.ffffffffffff..ffffff.f.....wwwwwr...........wwwwwwwwwhww...h.hh...hhh.hhhhhhhhfwhfhfffhfhhfffhwfhfhhffwwwwwwww",
+    "........f....f.f.ffffff.rrff.....h..h..h..h..frrff.ff.fff..ff.ffffffffrrrfrrrrwwwwrrrrrrr.........wwwwwhwwhhhhhhh.h.hhh.hhwhhhhhwhhwfwhffhwfffwwwfhfffhwwwwwwwww",
+    ".........f.ffffff..fffffrffff...h....hh..hh.hffrffffffff.ff.ffffffhfhf.fff....wwww...................whhhhwh..hhhhhh..h.hhhhhhhfhhwffwwhfffhwhwwfwwwwwfwwwwwwwww",
+    ".......f.f...ff.ff.fffffr.f.f.fh.hh..fh..fhhhhfrfffffffffffffffhffff.fff.....wwww.....................hwwhhwwwhh.hhh.hhwwwhhwhwffwhfffhhhfhwwwhfwhwwhwfwwwwwwwww",
+    "..........fff.f...ffffffr..ff..h.hf.fhfhhhf.fhhrf....ffff.ffffffffffhf.fh....www......................hwhhhwhwh.hhhhhhhhhwhhwhffhhwhwffwfhwwwhfwwffwfwwwwwwwwwww",
+    "........ff..fffffff..fffrf.f.fhhhh.h.hhff.ffhf.rh.fffffhfff.ffff.fff..hfh.f..www......................hhhwhhwhwhhhhhhhhhwwwhwhhwfwwfwfwhwwhwffwfhwffwwwwwwwwwwww",
+    "...........f...fffff.ffrrff.f.h.hhhhhfhhf..hhhhrh.hf.hffffffhfffhff.ff.hf.h..wwww...................h.hhh.hhhwhw.h.hhhhwhhhhwwwfhfwhwhhwfwwfhwhwfhfhwwwwwwwwwwww",
+    "......f....fff.ff.fffffrffffff.fh.f.hhwfhhf.hh.rrhhfhffffhffffhfhff..f.fhf...wwww.....ffffff..h.......h.hhh.hwwhhhhwffhwhwwhfwwwwwwwwwwfhffhwfwfwwfwwwwwwwwwwwww",
+    ".........hff.ff..ffffffrffffffhhhfwfwwhwhhhhhhhfrh..fhhfffhfhfffhff.h.ffh.h..wwwwhhff..ff...ffhh...h..hhhhhhhhwhhwwhffwwwwwwwwwwwwwwwwwwwfwfhwfwwwwwwwwwwwwwwwww",
+    ".........h.hf.ffff.ffrrrffffwfhwfwwhwfwwhwhwwh.frhfhfffffffffffffhh.hhfhfh.wwwwwwwwwwwwwwwwwwwwwwwwwwwwhhhssshwwhhwhfwwwwwwwwwwwwwwwwwwwwwwwfwwwwwwwwwwwwwwwwwww",
+    ".....hhh.f..f.hfff.ffrhffwhhwwfwhhhwwwfwwwhw.wwhrf.hf..hhffff.fhfhh.hfhh..h..wwwwwwwwwwwwwwwwwwwwwwwwwwwwhh.hhhfwwhfwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".....h..h.ff.fh.ff.frrfhhhwwwwwwwwwhwwwwwww.wwhwrrhhhhffffh.fffh.hfhf.h..hhhhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwhhhsffwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "........hh..hfhh.ffhrffwwwwww.wwwwwwwhhwwwwwhrwfwr.fhhf..hfffffh.h.fffh.h.h..wwwhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".....hh..h.h.fffhrrrrwffwhhwwhwwwwwwwwwhf.wwwrwhwrrrh.hff.ffhfff.fhff..f.f...wwwfhhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".....hhh.h...h.ffrffwwwwwwwwwhwwwwwwwwwwwhfwwrrrrrwrhh.hhhf...hhhffhfffh.f.ffwwww.hfhfwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".....hh.h.hh....rrfffwhfwwwwwwwwwhwwwwwwwwwwhww.wwhrhh..ffhfhfff.fhfhhf.fffhfwwwwhf.ff.fwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "......hhh.....hhr.hhhhwwhwhwwwwwwwwwwwfwwfwfwhhw.wwrrh..hhfhffhhhffhhhfff..ffwwww.hhh..ffhfwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "......hh.h...h..rf.wwhhfwww.wwwwwfww.wwwwffwwwwwhhwwr..h.h.h.fff.ffffff.f..ffwwww..fff.fff..hwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".......hh..hh...rrf.wwwhwwwwwwwwwwwwwwwwwwwwwwwwfwwhrrr.hh.hff.h..h.hff.fffff.wwwwf.f.ffffff.fhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".................rw.fhhfwhwhwwwww.w.wwwwwwwwwffw.wf.hhrrhhrrr.f..f..f.....ff..wwww..ffffffhffff.swwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "................hrrw..wfwwwwwwwwwwwwwwwfwfwwwwwwwffwhrrrrrr.fff.f.ffff..ff...fwwwwwf.ff.f.fffffhhhfwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "..................r.www.wwwwwwww.wwwwwwwwwfwwwwwf.wwhr.hh.ff.fffff.fffff.ff....wwww.f.ff.f.fffffhfhswwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "..................rww..wfw.w.wwwwwwwwwwwwwwwfwfwwww..rwww.fffffffff.f.....fff.f.wwwf.ff...f.f..fffhsshwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "..................r.w.wwfwfwwwwfwwfwwwfwww.ffwffwwfw.rwwwwwwf....ff.fff..ffff...wwwf...ff.f.f..f.h.hhswwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "..........f...ff..r.ffwfwwfwwffwwwwwwfw.fwwfwwfffw...rwwwwwwwwwww.f.f.f.fff.fffffff..f..f..f..fffshhhhswwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "...............f..rfw.wffwwfwwwwfwfwwwwfwwwwwfwffffw.r.wwwwwwwwwwwwwwwwwwwwwwwwfffwwwwwwffff..f..hssssswwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "...........h......r.ffwfwwfwww.fwwwwwwwwwww.wfwfww.wfr....wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwff.f..h..h.shwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "..........f.......rrrrrwwrww.wfwwwfwwwwfwwwfwwwwwrwrrr.....ff.wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwfwwwwwwwwhhwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "...................f.frrwrwfwwfwwwfwwfwwfwfwwww.wrrrf......f..fff.fffff.f.wwwwwwwwwww.wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".f........h.........fffrrr.ww.w.ffwffffwwwwwfffwwwrf......f...f....ffffff.wwwwwwwf......wwwwwwwwwwwwwwwwwwwwhwwwwffwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".....................f.ffrf.wwwwwwwfw.fwfww.wwwwwfrf......fffff.f...ffff...f.fffff.......wwwwwwww...wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".....................f.ffrfffwwffwfwwwwwfwwfwf.wffrf.........fff..f...f.f..f.fff....................www..wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "..............f........f.rr....ww.w.w.wwwwfwfwff.fr.f..f....ffff.ff.fh.fffffffff.........................wwwwwwwwwwwwh..wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "..........................r....www.fw...wwfwwff..fr....f.....f.fffffffff.fff.ff.f........s..........h........s...s........wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "f........f................rr.....wwwwwwh.f..fff.ffr.........s......f..ff..f..f................................s.............wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".................s........frrrrrrrrrrrrrrrrrrrrrrrr..........ff...fffff.f...f.f.......f.....................................wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".......h.............h.............................................f.....f..............h.................h..................wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............................hh............f.........................ff.fffff...f.....................................h.......wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "..........................f..h.................f..........................f..f.........................f......................wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
   ],
   "settlements": [
     {
@@ -92,17 +120,22 @@
       "type": "town",
       "x": 92,
       "y": 12,
-      "signpost": { "x": 92, "y": 12 },
+      "signpost": {
+        "x": 92,
+        "y": 12
+      },
       "travelFee": 40
     },
-
     {
       "id": "brindlewick_town",
       "name": "Brindlewick (Town)",
       "type": "town",
       "x": 20,
       "y": 18,
-      "signpost": { "x": 20, "y": 18 },
+      "signpost": {
+        "x": 20,
+        "y": 18
+      },
       "travelFee": 25
     },
     {
@@ -111,7 +144,10 @@
       "type": "town",
       "x": 48,
       "y": 56,
-      "signpost": { "x": 48, "y": 56 },
+      "signpost": {
+        "x": 48,
+        "y": 56
+      },
       "travelFee": 28
     },
     {
@@ -120,17 +156,22 @@
       "type": "town",
       "x": 12,
       "y": 38,
-      "signpost": { "x": 12, "y": 38 },
+      "signpost": {
+        "x": 12,
+        "y": 38
+      },
       "travelFee": 26
     },
-
     {
       "id": "willowmere_village",
       "name": "Willowmere (Village)",
       "type": "village",
       "x": 16,
       "y": 14,
-      "signpost": { "x": 16, "y": 14 },
+      "signpost": {
+        "x": 16,
+        "y": 14
+      },
       "travelFee": 12
     },
     {
@@ -139,7 +180,10 @@
       "type": "village",
       "x": 30,
       "y": 20,
-      "signpost": { "x": 30, "y": 20 },
+      "signpost": {
+        "x": 30,
+        "y": 20
+      },
       "travelFee": 12
     },
     {
@@ -148,7 +192,10 @@
       "type": "village",
       "x": 74,
       "y": 10,
-      "signpost": { "x": 74, "y": 10 },
+      "signpost": {
+        "x": 74,
+        "y": 10
+      },
       "travelFee": 14
     },
     {
@@ -157,7 +204,10 @@
       "type": "village",
       "x": 62,
       "y": 46,
-      "signpost": { "x": 62, "y": 46 },
+      "signpost": {
+        "x": 62,
+        "y": 46
+      },
       "travelFee": 14
     },
     {
@@ -166,31 +216,232 @@
       "type": "village",
       "x": 88,
       "y": 62,
-      "signpost": { "x": 88, "y": 62 },
+      "signpost": {
+        "x": 88,
+        "y": 62
+      },
       "travelFee": 15
+    },
+    {
+      "id": "camp_sunreed_ferry",
+      "name": "Sunreed Ferry Camp",
+      "type": "camp",
+      "x": 18,
+      "y": 77,
+      "signpost": {
+        "x": 18,
+        "y": 77
+      },
+      "travelFee": 8
+    },
+    {
+      "id": "hamlet_mirewatch",
+      "name": "Mirewatch Hamlet",
+      "type": "hamlet",
+      "x": 44,
+      "y": 61,
+      "signpost": {
+        "x": 44,
+        "y": 61
+      },
+      "travelFee": 10
+    },
+    {
+      "id": "camp_boulderhook",
+      "name": "Boulderhook Outpost",
+      "type": "outpost",
+      "x": 62,
+      "y": 80,
+      "signpost": {
+        "x": 62,
+        "y": 80
+      },
+      "travelFee": 9
+    },
+    {
+      "id": "hamlet_lakeshade",
+      "name": "Lakeshade Hamlet",
+      "type": "hamlet",
+      "x": 26,
+      "y": 87,
+      "signpost": {
+        "x": 26,
+        "y": 87
+      },
+      "travelFee": 10
     }
   ],
   "pointsOfInterest": [
-    { "id": "ruins_high_barrows", "name": "High Barrows Ruins", "type": "ruins", "x": 24, "y": 8, "minLevel": 3 },
-    { "id": "ruins_sunken_watch", "name": "Sunken Watch", "type": "ruins", "x": 14, "y": 54, "minLevel": 4 },
-
-    { "id": "cave_whisper_hole", "name": "Whisper Hole", "type": "cave", "x": 10, "y": 4, "minLevel": 2 },
-    { "id": "cave_stone_throat", "name": "Stone Throat Cavern", "type": "cave", "x": 68, "y": 28, "minLevel": 5 },
-
-    { "id": "camp_bandits_northroad", "name": "Bandit Camp: Northroad", "type": "enemy_camp", "x": 44, "y": 22, "minLevel": 2 },
-    { "id": "camp_raiders_southlake", "name": "Raider Camp: Southlake", "type": "enemy_camp", "x": 58, "y": 48, "minLevel": 4 },
-
-    { "id": "mountain_dragon_summit", "name": "Dragon Summit", "type": "mountain_summit", "x": 95, "y": 59, "minLevel": 12, "note": "High-level only. Dragon taming lives here." }
+    {
+      "id": "ruins_high_barrows",
+      "name": "High Barrows Ruins",
+      "type": "ruins",
+      "x": 24,
+      "y": 8,
+      "minLevel": 3
+    },
+    {
+      "id": "ruins_sunken_watch",
+      "name": "Sunken Watch",
+      "type": "ruins",
+      "x": 14,
+      "y": 54,
+      "minLevel": 4
+    },
+    {
+      "id": "cave_whisper_hole",
+      "name": "Whisper Hole",
+      "type": "cave",
+      "x": 10,
+      "y": 4,
+      "minLevel": 2
+    },
+    {
+      "id": "cave_stone_throat",
+      "name": "Stone Throat Cavern",
+      "type": "cave",
+      "x": 68,
+      "y": 28,
+      "minLevel": 5
+    },
+    {
+      "id": "camp_bandits_northroad",
+      "name": "Bandit Camp: Northroad",
+      "type": "enemy_camp",
+      "x": 44,
+      "y": 22,
+      "minLevel": 2
+    },
+    {
+      "id": "camp_raiders_southlake",
+      "name": "Raider Camp: Southlake",
+      "type": "enemy_camp",
+      "x": 58,
+      "y": 48,
+      "minLevel": 4
+    },
+    {
+      "id": "mountain_dragon_summit",
+      "name": "Dragon Summit",
+      "type": "mountain_summit",
+      "x": 95,
+      "y": 59,
+      "minLevel": 12,
+      "note": "High-level only. Dragon taming lives here."
+    },
+    {
+      "id": "ruins_drowned_chapel",
+      "name": "Drowned Chapel",
+      "type": "ruins",
+      "x": 33,
+      "y": 76,
+      "minLevel": 4,
+      "note": "A half-submerged chapel. Bells ring when no wind blows."
+    },
+    {
+      "id": "shrine_moonlit_spring",
+      "name": "Moonlit Spring",
+      "type": "shrine",
+      "x": 53,
+      "y": 84,
+      "minLevel": 3,
+      "note": "A clear spring that glows faintly at night. Good omens\u2026 mostly."
+    },
+    {
+      "id": "cave_bloodroot_grotto",
+      "name": "Bloodroot Grotto",
+      "type": "cave",
+      "x": 24,
+      "y": 62,
+      "minLevel": 5,
+      "note": "A cave with red-stained roots and echoing whispers."
+    },
+    {
+      "id": "camp_smugglers_cut",
+      "name": "Smugglers' Cut",
+      "type": "enemy_camp",
+      "x": 65,
+      "y": 84,
+      "minLevel": 4,
+      "note": "Hidden caches and a rough plank bridge across reeds."
+    }
   ],
   "namedRegions": [
-    { "name": "Whisperwood", "x1": 6, "y1": 1, "x2": 16, "y2": 5 },
-    { "name": "Lake Oath", "x1": 10, "y1": 9, "x2": 30, "y2": 16 },
-    { "name": "High Barrows", "x1": 18, "y1": 5, "x2": 34, "y2": 10 },
-    { "name": "Cartroad Spine", "x1": 24, "y1": 17, "x2": 70, "y2": 55 },
-    { "name": "Emberhold Basin", "x1": 34, "y1": 22, "x2": 50, "y2": 34 },
-    { "name": "Southlake Expanse", "x1": 20, "y1": 40, "x2": 78, "y2": 49 },
-
-    { "name": "Cinder Coast", "x1": 80, "y1": 8, "x2": 99, "y2": 20 },
-    { "name": "Dragonridge", "x1": 86, "y1": 54, "x2": 99, "y2": 69 }
+    {
+      "name": "Whisperwood",
+      "x1": 6,
+      "y1": 1,
+      "x2": 16,
+      "y2": 5
+    },
+    {
+      "name": "Lake Oath",
+      "x1": 10,
+      "y1": 9,
+      "x2": 30,
+      "y2": 16
+    },
+    {
+      "name": "High Barrows",
+      "x1": 18,
+      "y1": 5,
+      "x2": 34,
+      "y2": 10
+    },
+    {
+      "name": "Cartroad Spine",
+      "x1": 24,
+      "y1": 17,
+      "x2": 70,
+      "y2": 55
+    },
+    {
+      "name": "Emberhold Basin",
+      "x1": 34,
+      "y1": 22,
+      "x2": 50,
+      "y2": 34
+    },
+    {
+      "name": "Southlake Expanse",
+      "x1": 20,
+      "y1": 40,
+      "x2": 78,
+      "y2": 49
+    },
+    {
+      "name": "Cinder Coast",
+      "x1": 80,
+      "y1": 8,
+      "x2": 99,
+      "y2": 20
+    },
+    {
+      "name": "Dragonridge",
+      "x1": 86,
+      "y1": 54,
+      "x2": 99,
+      "y2": 69
+    },
+    {
+      "name": "Sunreed Marsh",
+      "x1": 14,
+      "y1": 70,
+      "x2": 60,
+      "y2": 88
+    },
+    {
+      "name": "Siltmere Lake",
+      "x1": 18,
+      "y1": 74,
+      "x2": 62,
+      "y2": 90
+    },
+    {
+      "name": "Ashstone Badlands",
+      "x1": 92,
+      "y1": 70,
+      "x2": 150,
+      "y2": 94
+    }
   ]
-}

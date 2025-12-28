@@ -17,6 +17,33 @@ process.on("unhandledRejection", (reason) => {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+function containsTransaction(sql: string) {
+  const s = sql.toUpperCase();
+  // crude but effective: catches BEGIN, BEGIN TRANSACTION, COMMIT, ROLLBACK
+  return (
+    /\bBEGIN\b/.test(s) ||
+    /\bCOMMIT\b/.test(s) ||
+    /\bROLLBACK\b/.test(s)
+  );
+}
+
+function printFkCheck(db: any) {
+  try {
+    const rows = db.prepare("PRAGMA foreign_key_check;").all();
+    if (!rows.length) {
+      console.log("foreign_key_check: no violations found.");
+      return;
+    }
+    console.error("foreign_key_check violations:");
+    for (const r of rows.slice(0, 25)) {
+      console.error(`- table=${r.table} rowid=${r.rowid} parent=${r.parent} fkid=${r.fkid}`);
+    }
+    if (rows.length > 25) console.error(`...and ${rows.length - 25} more`);
+  } catch (e) {
+    console.error("Could not run PRAGMA foreign_key_check:", e);
+  }
+}
+
 function main() {
   console.log("DB_PATH =", DB_PATH);
 
@@ -41,13 +68,39 @@ function main() {
 
   for (const f of files) {
     const full = path.join(migrationsDir, f);
-    console.log("Applying", f);
     const sql = fs.readFileSync(full, "utf8");
-    db.exec(sql);
+    const hasTx = containsTransaction(sql);
+
+    console.log("Applying", f, hasTx ? "(file manages its own transaction)" : "");
+
+    try {
+      if (!hasTx) {
+        db.exec("BEGIN;");
+        db.exec("PRAGMA defer_foreign_keys = ON;");
+      }
+
+      db.exec(sql);
+
+      if (!hasTx) {
+        db.exec("COMMIT;");
+      }
+    } catch (err) {
+      try {
+        if (!hasTx) db.exec("ROLLBACK;");
+      } catch {}
+
+      console.error(`❌ Migration failed: ${f}`);
+      console.error(err);
+
+      printFkCheck(db);
+
+      db.close();
+      process.exit(1);
+    }
   }
 
   db.close();
-  console.log("Migrations complete.");
+  console.log("✅ Migrations complete.");
 }
 
 main();

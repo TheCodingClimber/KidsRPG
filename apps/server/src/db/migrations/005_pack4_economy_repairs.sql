@@ -352,7 +352,6 @@ INSERT OR IGNORE INTO item_def_tags (item_def_id, tag_id) VALUES
 ('itm_trinket_phoenix_feather','item:trinket'),
 ('itm_trinket_dragon_scale','item:trinket'),
 ('itm_trinket_ancient_sigils','item:trinket'),
-
 ('itm_trinket_lucky_coin','trinket:coin'),
 ('itm_trinket_gleam_ring','trinket:ring'),
 ('itm_trinket_friendship_band','trinket:ring'),

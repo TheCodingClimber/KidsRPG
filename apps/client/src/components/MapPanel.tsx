@@ -5,12 +5,15 @@ import { getJson } from "../net/api";
 export type Settlement = {
   id: string;
   name: string;
-  type: "town" | "village";
+  type: string;
   x: number;
   y: number;
   signpost?: { x: number; y: number };
   travelFee?: number;
+  tier?: number;
+  prosperity?: number;
 };
+
 
 type POIType = "ruins" | "cave" | "enemy_camp" | "mountain_summit";
 
@@ -366,9 +369,10 @@ export default function MapPanel({
                   onMouseEnter={() => {
                     if (settlement) {
                       setHoverInfo(
-                        `${settlement.name} • ${settlement.type}${
-                          settlement.travelFee ? ` • Cart Fee: ${settlement.travelFee}g` : ""
-                        }`
+                        `${settlement.name} • ${settlement.type}` +
+                        (settlement.tier ? ` • Tier ${settlement.tier}` : "") +
+                        (typeof settlement.prosperity === "number" ? ` • Prosperity ${settlement.prosperity}` : "") +
+                        (settlement.travelFee ? ` • Cart Fee: ${settlement.travelFee}g` : "")
                       );
                       return;
                     }

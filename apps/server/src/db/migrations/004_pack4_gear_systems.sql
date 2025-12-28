@@ -1,6 +1,9 @@
-PRAGMA foreign_keys = ON;
-
 BEGIN;
+
+-- IMPORTANT: Pack migrations must be resilient across fresh DBs and partially-applied schemas.
+-- We disable FK enforcement during schema changes & seeding, then re-enable at the end.
+PRAGMA foreign_keys = OFF;
+PRAGMA defer_foreign_keys = ON;
 
 /* =========================================================
    PACK 4.2: Gear Systems (Auto-equip helpers, Set Bonuses,
@@ -176,23 +179,35 @@ INSERT OR IGNORE INTO tags (id, label) VALUES
 ('set:explorer', 'Set: Explorer'),
 ('set:iron_oath', 'Set: Iron Oath'),
 ('set:verdant', 'Set: Verdant'),
-('set:frostbound', 'Set: Frostbound');
+('set:frostbound', 'Set: Frostbound'),
+('material:iron', 'Iron'),
+('material:leather', 'Leather');
 
--- OPTIONAL: Tag a few of your existing items into sets (edit freely)
--- (This is intentionally light; you said you want BIG sets later.)
+-- OPTIONAL: Tag a few existing items into sets (only if those items exist)
+INSERT OR IGNORE INTO item_def_tags (item_def_id, tag_id)
+SELECT d.id, 'set:explorer'
+FROM item_defs d
+WHERE d.id IN ('itm_leather_helmet','itm_leather_armor','itm_feather_boots');
+
+INSERT OR IGNORE INTO item_def_tags (item_def_id, tag_id)
+SELECT d.id, 'set:iron_oath'
+FROM item_defs d
+WHERE d.id IN ('itm_iron_helmet','itm_iron_armor','itm_iron_shield');
+
+INSERT OR IGNORE INTO item_def_tags (item_def_id, tag_id)
+SELECT d.id, 'set:verdant'
+FROM item_defs d
+WHERE d.id IN ('itm_bark_armor','itm_glow_cloak');
+
+INSERT OR IGNORE INTO item_def_tags (item_def_id, tag_id)
+SELECT d.id, 'set:frostbound'
+FROM item_defs d
+WHERE d.id IN ('itm_frost_helm');
+
+-- Material tags for seeded resources (safe even if already tagged)
 INSERT OR IGNORE INTO item_def_tags (item_def_id, tag_id) VALUES
-('itm_leather_helmet', 'set:explorer'),
-('itm_leather_armor',  'set:explorer'),
-('itm_feather_boots',  'set:explorer'),
-
-('itm_iron_helmet', 'set:iron_oath'),
-('itm_iron_armor',  'set:iron_oath'),
-('itm_iron_shield', 'set:iron_oath'),
-
-('itm_bark_armor',  'set:verdant'),
-('itm_glow_cloak',  'set:verdant'),
-
-('itm_frost_helm',  'set:frostbound');
+('itm_iron_ore', 'material:iron'),
+('itm_leather',  'material:leather');
 
 -- View: count equipped set pieces per character
 CREATE VIEW IF NOT EXISTS v_character_set_piece_counts AS
@@ -421,14 +436,17 @@ INSERT OR IGNORE INTO tags (id, label) VALUES
 ('item:repair', 'Repair Item'),
 ('material:cloth', 'Cloth'),
 ('material:resin', 'Resin'),
-('material:stone', 'Stone');
+('material:stone', 'Stone'),
+('material:iron', 'Iron'),
+('material:leather', 'Leather');
 
 -- Seed repair materials + kits into item_defs if you don’t have them yet
 INSERT OR IGNORE INTO item_defs (id, name, type, slot, rarity, stackable, max_stack, base_value, weight, durability_max, meta_json) VALUES
 ('itm_cloth',          'Cloth',          'resource', NULL, 'common',   1, 50, 1, 0.2, 0, '{"tags":["item:resource","material:cloth"]}'),
 ('itm_resin',          'Resin',          'resource', NULL, 'common',   1, 50, 2, 0.2, 0, '{"tags":["item:resource","material:resin"]}'),
 ('itm_stone',          'Stone',          'resource', NULL, 'common',   1, 50, 1, 0.6, 0, '{"tags":["item:resource","material:stone"]}'),
-
+('itm_iron_ore',       'Iron Ore',      'resource', NULL, 'common', 1, 50, 2, 0.8, 0, '{"tags":["item:resource","material:iron"]}'),
+('itm_leather',        'Leather',       'resource', NULL, 'common', 1, 50, 2, 0.3, 0, '{"tags":["item:resource","material:leather"]}'),
 ('itm_whetstone',      'Whetstone',      'tool',     NULL, 'common',   1, 10, 4, 0.6, 0, '{"tags":["item:repair","tool:repair","repair:weapon"]}'),
 ('itm_leather_patch',  'Leather Patch',  'tool',     NULL, 'common',   1, 10, 3, 0.2, 0, '{"tags":["item:repair","tool:repair","repair:armor_leather"]}'),
 ('itm_chain_links',    'Chain Links',    'resource', NULL, 'uncommon', 1, 20, 6, 0.4, 0, '{"tags":["item:repair","repair:armor_chain"]}'),
@@ -446,7 +464,9 @@ INSERT OR IGNORE INTO item_def_tags (item_def_id, tag_id) VALUES
 ('itm_chain_links', 'item:repair'),
 ('itm_iron_rivets', 'item:repair'),
 ('itm_wood_glue', 'item:repair'),
-('itm_sewing_kit', 'item:repair');
+('itm_sewing_kit', 'item:repair'),
+('itm_iron_ore', 'material:iron'),
+('itm_leather', 'material:leather');
 
 CREATE TABLE IF NOT EXISTS repair_rules (
   id TEXT PRIMARY KEY,                 -- rr_weapon_basic
@@ -664,5 +684,8 @@ LEFT JOIN (
 /* =========================================================
    DONE
    ========================================================= */
+PRAGMA foreign_keys = ON;
+PRAGMA foreign_key_check;
+
 
 COMMIT;

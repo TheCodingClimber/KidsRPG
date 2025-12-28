@@ -1,9 +1,11 @@
+// apps/server/src/http.ts
 import express from "express";
 import cors from "cors";
 import crypto from "node:crypto";
 import { z } from "zod";
 import fs from "node:fs";
 import path from "node:path";
+
 import { openDb } from "./db/db.js";
 import { hashPin, verifyPin } from "./auth/pin.js";
 import { createSession } from "./auth/sessions.js";
@@ -14,6 +16,18 @@ export function createHttpServer() {
 
   app.use(cors());
   app.use(express.json());
+
+  function tableExists(db: any, tableName: string): boolean {
+  const row = db
+    .prepare(
+      `SELECT name
+       FROM sqlite_master
+       WHERE type='table' AND name = ?`
+    )
+    .get(tableName) as { name: string } | undefined;
+
+  return !!row;
+}
 
   /* =========================
      Health
@@ -89,7 +103,7 @@ export function createHttpServer() {
   });
 
   /* =========================
-     Character Creation
+     Character Creation / Listing
      ========================= */
   const CreateCharSchema = z.object({
     name: z.string().min(1).max(24),
@@ -104,30 +118,6 @@ export function createHttpServer() {
     const { accountId } = req as AuthedRequest;
     const db = openDb();
 
-    // Delete a character (and cascade deletes saves/equipment/items via foreign keys)
-app.delete("/characters/:characterId", requireAuth, (req, res) => {
-  const { accountId } = req as AuthedRequest;
-  const { characterId } = req.params;
-
-  const db = openDb();
-
-  // Verify character belongs to this account
-  const row = db
-    .prepare(`SELECT id FROM characters WHERE id = ? AND account_id = ?`)
-    .get(characterId, accountId) as { id: string } | undefined;
-
-  if (!row) {
-    db.close();
-    return res.status(404).json({ error: "Character not found" });
-  }
-
-  db.prepare(`DELETE FROM characters WHERE id = ? AND account_id = ?`).run(characterId, accountId);
-
-  db.close();
-  res.json({ ok: true });
-});
-
-
     const rows = db
       .prepare(
         `SELECT id, name, race, class, background, personality, level, gold
@@ -141,89 +131,30 @@ app.delete("/characters/:characterId", requireAuth, (req, res) => {
     res.json({ characters: rows });
   });
 
-  /* =========================
-   Inventory (Backpack) - using existing items/equipment tables
-   ========================= */
+  // Delete a character (and cascade deletes saves/equipment/items via foreign keys)
+  app.delete("/characters/:characterId", requireAuth, (req, res) => {
+    const { accountId } = req as AuthedRequest;
+    const { characterId } = req.params;
 
-app.get("/inventory/:characterId", requireAuth, (req, res) => {
-  const { accountId } = req as AuthedRequest;
-  const { characterId } = req.params;
+    const db = openDb();
 
-  const db = openDb();
+    const row = db
+      .prepare(`SELECT id FROM characters WHERE id = ? AND account_id = ?`)
+      .get(characterId, accountId) as { id: string } | undefined;
 
-  // Ensure character belongs to account
-  const ok = db
-    .prepare(`SELECT id FROM characters WHERE id = ? AND account_id = ?`)
-    .get(characterId, accountId);
+    if (!row) {
+      db.close();
+      return res.status(404).json({ error: "Character not found" });
+    }
 
-  if (!ok) {
+    db.prepare(`DELETE FROM characters WHERE id = ? AND account_id = ?`).run(
+      characterId,
+      accountId
+    );
+
     db.close();
-    return res.status(404).json({ error: "Character not found" });
-  }
-
-  // Return items NOT currently equipped
-  const rows = db
-    .prepare(
-      `SELECT id as itemId, name, slot, rarity, stats_json as statsJson
-       FROM items
-       WHERE character_id = ?
-         AND id NOT IN (
-           SELECT item_id FROM equipment
-           WHERE character_id = ?
-             AND item_id IS NOT NULL
-         )
-       ORDER BY name ASC`
-    )
-    .all(characterId, characterId);
-
-  db.close();
-  res.json({ items: rows });
-});
-
-app.post("/inventory/drop/:characterId", requireAuth, (req, res) => {
-  const { accountId } = req as AuthedRequest;
-  const { characterId } = req.params;
-
-  const DropSchema = z.object({
-    itemId: z.string().min(1),
+    res.json({ ok: true });
   });
-
-  const parsed = DropSchema.safeParse(req.body);
-  if (!parsed.success) {
-    return res.status(400).json({ error: parsed.error.message });
-  }
-
-  const { itemId } = parsed.data;
-
-  const db = openDb();
-
-  // Ensure character belongs to account
-  const ok = db
-    .prepare(`SELECT id FROM characters WHERE id = ? AND account_id = ?`)
-    .get(characterId, accountId);
-
-  if (!ok) {
-    db.close();
-    return res.status(404).json({ error: "Character not found" });
-  }
-
-  // If this item is equipped, unequip it first
-  db.prepare(
-    `UPDATE equipment
-     SET item_id = NULL
-     WHERE character_id = ? AND item_id = ?`
-  ).run(characterId, itemId);
-
-  // Delete the item (only if it belongs to this character)
-  const result = db
-    .prepare(`DELETE FROM items WHERE id = ? AND character_id = ?`)
-    .run(itemId, characterId);
-
-  db.close();
-
-  res.json({ ok: true, deleted: result.changes });
-});
-
 
   app.post("/characters", requireAuth, (req, res) => {
     const { accountId } = req as AuthedRequest;
@@ -240,7 +171,7 @@ app.post("/inventory/drop/:characterId", requireAuth, (req, res) => {
     const { name, race, class: cls, background, personality, starterKitId } =
       parsed.data;
 
-    // optional: unique name per account
+    // Optional: unique name per account
     const exists = db
       .prepare(`SELECT id FROM characters WHERE account_id = ? AND name = ?`)
       .get(accountId, name);
@@ -302,198 +233,11 @@ app.post("/inventory/drop/:characterId", requireAuth, (req, res) => {
     y: z.number().int(),
   });
 
-  /* =========================
-   Inventory (Backpack)
-   ========================= */
-
-// Returns backpack items for a character (owned by this account)
-app.get("/inventory/:characterId", requireAuth, (req, res) => {
-  const { accountId } = req as AuthedRequest;
-  const { characterId } = req.params;
-
-  const db = openDb();
-
-  // Ensure character belongs to account
-  const ok = db
-    .prepare(`SELECT id FROM characters WHERE id = ? AND account_id = ?`)
-    .get(characterId, accountId);
-
-  if (!ok) {
-    db.close();
-    return res.status(404).json({ error: "Character not found" });
-  }
-
-  // Try to load from a real inventory table if it exists.
-  // If your schema differs, adjust the query to match.
-  // Expected schema: inventory(character_id, item_id, qty) + items(id, name)
-  try {
-    const rows = db
-      .prepare(
-        `SELECT i.id as itemId, i.name as name, COALESCE(inv.qty, 1) as qty
-         FROM inventory inv
-         JOIN items i ON i.id = inv.item_id
-         WHERE inv.character_id = ?
-         ORDER BY i.name ASC`
-      )
-      .all(characterId) as Array<{ itemId: string; name: string; qty: number }>;
-
-    db.close();
-    return res.json({ items: rows });
-  } catch (err) {
-    // If the inventory table doesn't exist yet, return empty backpack instead of crashing.
-    db.close();
-    return res.json({ items: [] });
-  }
-});
-
-// Drops ONE unit of an item (or removes the row if qty hits 0)
-app.post("/inventory/drop/:characterId", requireAuth, (req, res) => {
-  const { accountId } = req as AuthedRequest;
-  const { characterId } = req.params;
-
-  const ItemDropSchema = z.object({
-    itemId: z.string().min(1),
-  });
-
-  const parsed = ItemDropSchema.safeParse(req.body);
-  if (!parsed.success) {
-    return res.status(400).json({ error: parsed.error.message });
-  }
-
-  const { itemId } = parsed.data;
-
-  const db = openDb();
-
-  // Ensure character belongs to account
-  const ok = db
-    .prepare(`SELECT id FROM characters WHERE id = ? AND account_id = ?`)
-    .get(characterId, accountId);
-
-  if (!ok) {
-    db.close();
-    return res.status(404).json({ error: "Character not found" });
-  }
-
-  // If inventory table isn't present, treat as no-op
-  try {
-    const row = db
-      .prepare(`SELECT qty FROM inventory WHERE character_id = ? AND item_id = ?`)
-      .get(characterId, itemId) as { qty: number } | undefined;
-
-    if (!row) {
-      db.close();
-      return res.json({ ok: true });
-    }
-
-    if (row.qty <= 1) {
-      db.prepare(`DELETE FROM inventory WHERE character_id = ? AND item_id = ?`).run(characterId, itemId);
-    } else {
-      db.prepare(
-        `UPDATE inventory SET qty = qty - 1 WHERE character_id = ? AND item_id = ?`
-      ).run(characterId, itemId);
-    }
-
-    db.close();
-    return res.json({ ok: true });
-  } catch {
-    db.close();
-    return res.json({ ok: true });
-  }
-});
-
-
   app.get("/game/load/:characterId", requireAuth, (req, res) => {
     const { accountId } = req as AuthedRequest;
     const { characterId } = req.params;
 
     const db = openDb();
-
-const FastTravelSchema = z.object({
-  regionId: z.string().min(1),
-  settlementId: z.string().min(1),
-});
-
-function loadWorld(regionId: string) {
-  const worldPath = path.resolve(process.cwd(), "../../data/world", `${regionId}_v1.json`);
-  const raw = fs.readFileSync(worldPath, "utf-8");
-  return JSON.parse(raw);
-}
-
-app.post("/game/fast-travel/:characterId", requireAuth, (req, res) => {
-  const { accountId } = req as AuthedRequest;
-  const { characterId } = req.params;
-
-  const parsed = FastTravelSchema.safeParse(req.body);
-  if (!parsed.success) return res.status(400).json({ error: parsed.error.message });
-
-  const { regionId, settlementId } = parsed.data;
-
-  const db = openDb();
-
-  // Verify character belongs to account + get current gold
-  const char = db
-    .prepare(`SELECT id, gold FROM characters WHERE id = ? AND account_id = ?`)
-    .get(characterId, accountId) as { id: string; gold: number } | undefined;
-
-  if (!char) {
-    db.close();
-    return res.status(404).json({ error: "Character not found" });
-  }
-
-  // Load world and find settlement
-  let world: any;
-  try {
-    world = loadWorld(regionId);
-  } catch {
-    db.close();
-    return res.status(404).json({ error: "Region not found" });
-  }
-
-  const settlement = (world.settlements || []).find((s: any) => s.id === settlementId);
-  if (!settlement) {
-    db.close();
-    return res.status(404).json({ error: "Settlement not found" });
-  }
-
-  const fee = Number(settlement.travelFee ?? (settlement.type === "town" ? 25 : 10));
-  if (char.gold < fee) {
-    db.close();
-    return res.status(400).json({ error: `Not enough gold. Need ${fee}g.` });
-  }
-
-  const now = Date.now();
-
-  // Deduct gold
-  db.prepare(`UPDATE characters SET gold = gold - ?, updated_at = ? WHERE id = ?`).run(fee, now, characterId);
-
-  // Travel destination: signpost if present, else settlement coords
-  const destX = settlement.signpost?.x ?? settlement.x;
-  const destY = settlement.signpost?.y ?? settlement.y;
-
-  // Save position (UPSERT)
-  db.prepare(
-    `INSERT INTO saves (character_id, region_id, x, y, last_seen_at, state_json)
-     VALUES (?, ?, ?, ?, ?, '{}')
-     ON CONFLICT(character_id) DO UPDATE SET
-       region_id = excluded.region_id,
-       x = excluded.x,
-       y = excluded.y,
-       last_seen_at = excluded.last_seen_at`
-  ).run(characterId, regionId, destX, destY, now);
-
-  // Return updated state
-    const updatedChar = db
-        .prepare(`SELECT id, gold FROM characters WHERE id = ?`)
-        .get(characterId);
-
-    const save = db
-        .prepare(`SELECT region_id, x, y, last_seen_at, state_json FROM saves WHERE character_id = ?`)
-        .get(characterId);
-
-    db.close();
-        res.json({ ok: true, fee, character: updatedChar, save, settlementName: settlement.name });
-    });
-
 
     const character = db
       .prepare(
@@ -561,14 +305,214 @@ app.post("/game/fast-travel/:characterId", requireAuth, (req, res) => {
   });
 
   /* =========================
-     World: Regions
+     Inventory (Backpack) - using existing items/equipment tables
+     ========================= */
+  app.get("/inventory/:characterId", requireAuth, (req, res) => {
+    const { accountId } = req as AuthedRequest;
+    const { characterId } = req.params;
+
+    const db = openDb();
+
+    // Ensure character belongs to account
+    const ok = db
+      .prepare(`SELECT id FROM characters WHERE id = ? AND account_id = ?`)
+      .get(characterId, accountId);
+
+    if (!ok) {
+      db.close();
+      return res.status(404).json({ error: "Character not found" });
+    }
+
+    // Return items NOT currently equipped
+    const rows = db
+      .prepare(
+        `SELECT id as itemId, name, slot, rarity, stats_json as statsJson
+         FROM items
+         WHERE character_id = ?
+           AND id NOT IN (
+             SELECT item_id FROM equipment
+             WHERE character_id = ?
+               AND item_id IS NOT NULL
+           )
+         ORDER BY name ASC`
+      )
+      .all(characterId, characterId);
+
+    db.close();
+    res.json({ items: rows });
+  });
+
+  app.post("/inventory/drop/:characterId", requireAuth, (req, res) => {
+    const { accountId } = req as AuthedRequest;
+    const { characterId } = req.params;
+
+    const DropSchema = z.object({
+      itemId: z.string().min(1),
+    });
+
+    const parsed = DropSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: parsed.error.message });
+    }
+
+    const { itemId } = parsed.data;
+
+    const db = openDb();
+
+    // Ensure character belongs to account
+    const ok = db
+      .prepare(`SELECT id FROM characters WHERE id = ? AND account_id = ?`)
+      .get(characterId, accountId);
+
+    if (!ok) {
+      db.close();
+      return res.status(404).json({ error: "Character not found" });
+    }
+
+    // If this item is equipped, unequip it first
+    db.prepare(
+      `UPDATE equipment
+       SET item_id = NULL
+       WHERE character_id = ? AND item_id = ?`
+    ).run(characterId, itemId);
+
+    // Delete the item (only if it belongs to this character)
+    const result = db
+      .prepare(`DELETE FROM items WHERE id = ? AND character_id = ?`)
+      .run(itemId, characterId);
+
+    db.close();
+
+    res.json({ ok: true, deleted: result.changes });
+  });
+
+  /* =========================
+     Fast Travel (DB settlements source of truth)
+     ========================= */
+  const FastTravelSchema = z.object({
+    regionId: z.string().min(1),
+    settlementId: z.string().min(1),
+  });
+
+  app.post("/game/fast-travel/:characterId", requireAuth, (req, res) => {
+    const { accountId } = req as AuthedRequest;
+    const { characterId } = req.params;
+
+    const parsed = FastTravelSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: parsed.error.message });
+    }
+
+    const { regionId, settlementId } = parsed.data;
+
+    const db = openDb();
+
+    // Verify character belongs to account + get current gold
+    const char = db
+      .prepare(`SELECT id, gold FROM characters WHERE id = ? AND account_id = ?`)
+      .get(characterId, accountId) as { id: string; gold: number } | undefined;
+
+    if (!char) {
+      db.close();
+      return res.status(404).json({ error: "Character not found" });
+    }
+
+    // Load settlement from DB (source of truth)
+    const row = db
+      .prepare(
+        `SELECT id, name, type, x, y, meta_json
+         FROM settlements_v2
+         WHERE id = ? AND region_id = ?`
+      )
+      .get(settlementId, regionId) as
+      | { id: string; name: string; type: string; x: number; y: number; meta_json: string }
+      | undefined;
+
+    if (!row) {
+      db.close();
+      return res.status(404).json({ error: "Settlement not found" });
+    }
+
+    let meta: any = {};
+    try {
+      meta = row.meta_json ? JSON.parse(row.meta_json) : {};
+    } catch {
+      meta = {};
+    }
+
+    const settlement = {
+      id: row.id,
+      name: row.name,
+      type: row.type,
+      x: Number(row.x),
+      y: Number(row.y),
+      signpost: meta?.signpost,
+      travelFee: meta?.travelFee,
+    };
+
+    const fee = Number(
+      settlement.travelFee ??
+        (settlement.type === "capital"
+          ? 60
+          : settlement.type === "city"
+            ? 40
+            : settlement.type === "town"
+              ? 25
+              : 10)
+    );
+
+    if (char.gold < fee) {
+      db.close();
+      return res.status(400).json({ error: `Not enough gold. Need ${fee}g.` });
+    }
+
+    const now = Date.now();
+
+    // Deduct gold
+    db.prepare(`UPDATE characters SET gold = gold - ?, updated_at = ? WHERE id = ?`)
+      .run(fee, now, characterId);
+
+    // Destination: signpost if present, else settlement coords
+    const destX = settlement.signpost?.x ?? settlement.x;
+    const destY = settlement.signpost?.y ?? settlement.y;
+
+    // Save position (UPSERT)
+    db.prepare(
+      `INSERT INTO saves (character_id, region_id, x, y, last_seen_at, state_json)
+       VALUES (?, ?, ?, ?, ?, '{}')
+       ON CONFLICT(character_id) DO UPDATE SET
+         region_id = excluded.region_id,
+         x = excluded.x,
+         y = excluded.y,
+         last_seen_at = excluded.last_seen_at`
+    ).run(characterId, regionId, destX, destY, now);
+
+    const updatedChar = db
+      .prepare(`SELECT id, gold FROM characters WHERE id = ?`)
+      .get(characterId);
+
+    const save = db
+      .prepare(`SELECT region_id, x, y, last_seen_at, state_json FROM saves WHERE character_id = ?`)
+      .get(characterId);
+
+    db.close();
+
+    return res.json({
+      ok: true,
+      fee,
+      character: updatedChar,
+      save,
+      settlementName: settlement.name,
+    });
+  });
+
+  /* =========================
+     World: Regions (JSON tiles + DB settlements)
      ========================= */
   app.get("/world/regions/:regionId", requireAuth, (req, res) => {
     const { regionId } = req.params;
 
     try {
-      // process.cwd() will be apps/server when running from that folder
-      // ../../data/world -> KidsRPG/data/world
       const worldPath = path.resolve(
         process.cwd(),
         "../../data/world",
@@ -579,13 +523,92 @@ app.post("/game/fast-travel/:characterId", requireAuth, (req, res) => {
         return res.status(404).json({ error: "Region not found" });
       }
 
+      // 1) Load tiles/legend/POIs from JSON (render cache)
       const raw = fs.readFileSync(worldPath, "utf-8");
       const world = JSON.parse(raw);
 
-      res.json(world);
+      // 2) Load settlements from DB (source of truth)
+      const db = openDb();
+      const rows = db
+        .prepare(
+          `SELECT id, name, type, x, y, meta_json, tier, prosperity
+           FROM settlements_v2
+           WHERE region_id = ?
+           ORDER BY name ASC`
+        )
+        .all(regionId) as Array<{
+          id: string;
+          name: string;
+          type: string;
+          x: number;
+          y: number;
+          meta_json: string;
+          tier?: number;
+          prosperity?: number;
+        }>;
+
+      db.close();
+
+      const settlements = rows.map((r) => {
+        let meta: any = {};
+        try {
+          meta = r.meta_json ? JSON.parse(r.meta_json) : {};
+        } catch {
+          meta = {};
+        }
+
+        return {
+          id: r.id,
+          name: r.name,
+          type: r.type,
+          x: Number(r.x),
+          y: Number(r.y),
+          signpost: meta?.signpost,
+          travelFee: meta?.travelFee,
+          tier: typeof r.tier === "number" ? r.tier : undefined,
+          prosperity: typeof r.prosperity === "number" ? r.prosperity : undefined,
+        };
+      });
+
+      world.settlements = settlements;
+      world._sources = { tiles: "json", settlements: "db" };
+      // 3) Load POIs from DB (source of truth)
+const poiRows = db
+  .prepare(
+    `SELECT id, name, type, x, y, min_level, meta_json
+     FROM pois_v1
+     WHERE region_id = ?
+     ORDER BY min_level ASC, name ASC`
+  )
+  .all(regionId) as Array<{
+    id: string;
+    name: string;
+    type: string;
+    x: number;
+    y: number;
+    min_level: number;
+    meta_json: string;
+  }>;
+
+  const pointsOfInterest = poiRows.map((p) => {
+    let meta: any = {};
+    try { meta = p.meta_json ? JSON.parse(p.meta_json) : {}; } catch { meta = {}; }
+    return {
+      id: p.id,
+      name: p.name,
+      type: p.type,
+      x: Number(p.x),
+      y: Number(p.y),
+      minLevel: Number(p.min_level),
+      ...meta, // optional fields like note
+    };
+  });
+
+world.pointsOfInterest = pointsOfInterest;
+      return res.json(world);
     } catch (err) {
       console.error("Failed to load world:", err);
-      res.status(500).json({ error: "Failed to load world" });
+      return res.status(500).json({ error: "Failed to load world" });
     }
   });
 
